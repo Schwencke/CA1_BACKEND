@@ -1,5 +1,8 @@
 package facades;
 
+import dtos.PersonDTO;
+import dtos.PersonsDTO;
+
 import java.util.List;
 
 public interface IPersonFacade {
@@ -9,7 +12,7 @@ public interface IPersonFacade {
                                String gender,
                                String email,
                                String city,
-                               String city,
+                               String city2,
                                String zip,
                                List<String> hobbies);
 

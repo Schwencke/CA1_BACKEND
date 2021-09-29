@@ -1,5 +1,9 @@
 package facades;
 
+import dtos.PersonDTO;
+import dtos.PersonsDTO;
+import entities.Person;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
@@ -28,7 +32,7 @@ public class PersonFacade implements IPersonFacade {
 
     @Override
     public PersonDTO addPerson(String fName, String lName, int age, String gender, String email, String city, String city2, String zip, List<String> hobbies) {
-        Person person = new Person(String fName, String lName, int age, String gender, String email, String city, String city2, String zip, List<String> hobbies);
+        Person person = new Person(fName, lName, age,gender,email, city, city2,zip,hobbies);
 
         EntityManager em = getEntityManager();
         try {

@@ -8,7 +8,6 @@ import java.util.Date;
 public class PersonDTO {
     private String fName;
     private String lName;
-    private String phone;
     private Integer id;
     private Date created;
     private Date lastEdited;
@@ -16,23 +15,20 @@ public class PersonDTO {
     private String zp;
     private String ct;
 
-    public PersonDTO(String fName, String lName, String phone) {
+    public PersonDTO(String fName, String lName) {
         this.fName = fName;
         this.lName = lName;
-        this.phone = phone;
     }
 
-    public PersonDTO(String fName, String lName, String phone, Integer id) {
+    public PersonDTO(String fName, String lName, Integer id) {
         this.fName = fName;
         this.lName = lName;
-        this.phone = phone;
         this.id = id;
     }
 
     public PersonDTO(Person ps) {
         this.fName = ps.getFirstName();
         this.lName = ps.getLastName();
-        this.phone = ps.getPhone();
         this.srt = ps.getAddress().getStreet();
         this.zp = ps.getAddress().getZip();
         this.ct = ps.getAddress().getCity();
@@ -40,21 +36,20 @@ public class PersonDTO {
     }
 
 
-    public PersonDTO(String fName, String lName, String phone, String srt, String zp, String ct) {
+    public PersonDTO(String fName, String lName, String srt, String zp, String ct) {
         this.fName = fName;
         this.lName = lName;
-        this.phone = phone;
         this.srt = srt;
         this.zp = zp;
         this.ct = ct;
     }
 
     public static PersonDTO getDto(Person ps){
-        return new PersonDTO(ps.getFirstName(), ps.getLastName(), ps.getPhone());
+        return new PersonDTO(ps.getFirstName(), ps.getLastName());
     }
 
     public static PersonDTO getDtoWithAddress(Person ps, Address ad){
-        return new PersonDTO(ps.getFirstName(), ps.getLastName(), ps.getPhone(), ad.getStreet(), ad.getZip(), ad.getCity());
+        return new PersonDTO(ps.getFirstName(), ps.getLastName(), ad.getStreet(), ad.getZip(), ad.getCity());
     }
 
     public String getSrt() {
@@ -97,14 +92,6 @@ public class PersonDTO {
         this.lName = lName;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
     public Integer getId() {
         return id;
     }
@@ -134,7 +121,6 @@ public class PersonDTO {
         return "PersonDTO{" +
                 "fName='" + fName + '\'' +
                 ", lName='" + lName + '\'' +
-                ", phone='" + phone + '\'' +
                 ", id=" + id +
                 ", srt='" + srt + '\'' +
                 ", zp='" + zp + '\'' +

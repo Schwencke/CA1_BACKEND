@@ -28,58 +28,58 @@ public class Person {
     public Person() {
     }
 
-    public Person(String firstName, String lastName, String phone, Date created, Date lastEdited) {
+
+    public Person(String firstName, String lastName, int age, String gender, String email, List<String> hobbys, Date created, Date lastEdited, Address address) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.phone = phone;
+        this.age = age;
+        this.gender = gender;
+        this.email = email;
+        this.hobbys = hobbys;
         this.created = created;
         this.lastEdited = lastEdited;
-    }
-
-    public Person(String firstName, String lastName, String phone,Integer id, Date created) {
-
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phone = phone;
-        this.id = id;
-        this.created = created;
-    }
-
-    public Person(String firstName, String lastName, String phone) {
-        this.created = new Date();
-        this.lastEdited = created = new Date();
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phone = phone;
-    }
-    public Person(String firstName, String lastName, String phone,Address address) {
-        this.created = new Date();
-        this.lastEdited = created = new Date();
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phone = phone;
         this.address = address;
     }
 
-    public Person(String firstName, String lastName, String phone, Integer id) {
+    public Person(String firstName, String lastName, Integer id, Date created) {
+
         this.firstName = firstName;
         this.lastName = lastName;
-        this.phone = phone;
+        this.id = id;
+        this.created = created;
+    }
+
+    public Person(String firstName, String lastName) {
+        this.created = new Date();
+        this.lastEdited = created = new Date();
+        this.firstName = firstName;
+        this.lastName = lastName;
+
+    }
+    public Person(String firstName, String lastName,Address address) {
+        this.created = new Date();
+        this.lastEdited = created = new Date();
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+    }
+
+    public Person(String firstName, String lastName, Integer id) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.id = id;
     }
 
-    public Person(Integer id, String firstName, String lastName, String phone, Address address) {
+    public Person(Integer id, String firstName, String lastName, Address address) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.phone = phone;
         this.address = address;
     }
 
     public Person fromDTO(PersonDTO dto, Person ps){
         ps.setFirstName(dto.getfName());
         ps.setLastName(dto.getlName());
-        ps.setPhone(dto.getPhone());
         ps.lastEdited = new Date();
         return ps;
     }
@@ -106,14 +106,6 @@ public class Person {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public Date getCreated() {
