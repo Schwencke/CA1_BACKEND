@@ -4,6 +4,7 @@ import entities.Address;
 import entities.Person;
 
 import java.util.Date;
+import java.util.List;
 
 public class PersonDTO {
     private Integer id;
@@ -13,9 +14,10 @@ public class PersonDTO {
     private String gender;
     private String phone;
     private String email;
-    private String srt;
+    private String st;
     private String zp;
     private String ct;
+    private List<String> hobs;
     private Date created;
     private Date lastEdited;
 
@@ -33,17 +35,17 @@ public class PersonDTO {
     public PersonDTO(Person ps) {
         this.fName = ps.getFirstName();
         this.lName = ps.getLastName();
-        this.srt = ps.getAddress().getStreet();
+        this.st = ps.getAddress().getStreet();
         this.zp = ps.getAddress().getZip();
         this.ct = ps.getAddress().getCity();
         this.id = ps.getId();
     }
 
 
-    public PersonDTO(String fName, String lName, String srt, String zp, String ct) {
+    public PersonDTO(String fName, String lName, String st, String zp, String ct) {
         this.fName = fName;
         this.lName = lName;
-        this.srt = srt;
+        this.st = st;
         this.zp = zp;
         this.ct = ct;
     }
@@ -56,27 +58,67 @@ public class PersonDTO {
         return new PersonDTO(ps.getFirstName(), ps.getLastName(), ad.getStreet(), ad.getZip(), ad.getCity());
     }
 
-    public String getSrt() {
-        return srt;
+    public int getAge() {
+        return age;
     }
 
-    public void setSrt(String srt) {
-        this.srt = srt;
+    public void setAge(int age) {
+        this.age = age;
     }
 
-    public String getZp() {
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public List<String> getHobbies() {
+        return hobs;
+    }
+
+    public void setHobbies(List<String> hobs) {
+        this.hobs = hobs;
+    }
+
+    public String getStreet() {
+        return st;
+    }
+
+    public void setStreet(String srt) {
+        this.st = srt;
+    }
+
+    public String getZip() {
         return zp;
     }
 
-    public void setZp(String zp) {
+    public void setZip(String zp) {
         this.zp = zp;
     }
 
-    public String getCt() {
+    public String getCity() {
         return ct;
     }
 
-    public void setCt(String ct) {
+    public void setCity(String ct) {
         this.ct = ct;
     }
 
@@ -130,7 +172,7 @@ public class PersonDTO {
                 ", gender='" + gender + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
-                ", srt='" + srt + '\'' +
+                ", srt='" + st + '\'' +
                 ", zp='" + zp + '\'' +
                 ", ct='" + ct + '\'' +
                 ", created=" + created +

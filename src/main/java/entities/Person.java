@@ -16,6 +16,7 @@ public class Person {
     private String lastName;
     private int age;
     private String gender;
+    private String phone;
     private String email;
     private List<String> hobbys;
     @Temporal(TemporalType.TIMESTAMP)
@@ -28,6 +29,16 @@ public class Person {
     public Person() {
     }
 
+
+    public Person(String firstName, String lastName, int age, String gender, String phone, String email, List<String> hobbys) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.gender = gender;
+        this.phone = phone;
+        this.email = email;
+        this.hobbys = hobbys;
+    }
 
     public Person(String firstName, String lastName, int age, String gender, String email, List<String> hobbys, Date created, Date lastEdited, Address address) {
         this.firstName = firstName;
@@ -77,11 +88,21 @@ public class Person {
         this.address = address;
     }
 
+
+
     public Person fromDTO(PersonDTO dto, Person ps){
         ps.setFirstName(dto.getfName());
         ps.setLastName(dto.getlName());
         ps.lastEdited = new Date();
         return ps;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public int getAge() {
