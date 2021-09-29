@@ -6,14 +6,18 @@ import entities.Person;
 import java.util.Date;
 
 public class PersonDTO {
+    private Integer id;
     private String fName;
     private String lName;
-    private Integer id;
-    private Date created;
-    private Date lastEdited;
+    private int age;
+    private String gender;
+    private String phone;
+    private String email;
     private String srt;
     private String zp;
     private String ct;
+    private Date created;
+    private Date lastEdited;
 
     public PersonDTO(String fName, String lName) {
         this.fName = fName;
@@ -119,12 +123,18 @@ public class PersonDTO {
     @Override
     public String toString() {
         return "PersonDTO{" +
-                "fName='" + fName + '\'' +
+                "id=" + id +
+                ", fName='" + fName + '\'' +
                 ", lName='" + lName + '\'' +
-                ", id=" + id +
+                ", age=" + age +
+                ", gender='" + gender + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
                 ", srt='" + srt + '\'' +
                 ", zp='" + zp + '\'' +
                 ", ct='" + ct + '\'' +
+                ", created=" + created +
+                ", lastEdited=" + lastEdited +
                 '}';
     }
 }

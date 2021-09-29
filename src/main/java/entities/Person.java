@@ -84,6 +84,38 @@ public class Person {
         return ps;
     }
 
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public List<String> getHobbys() {
+        return hobbys;
+    }
+
+    public void setHobbys(List<String> hobbys) {
+        this.hobbys = hobbys;
+    }
+
     public Integer getId() {
         return id;
     }
