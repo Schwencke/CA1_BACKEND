@@ -39,6 +39,8 @@ public class Person {
         this.email = email;
         this.hobbies = hobbies;
         address = new Address(Street, zip, city);
+        this.created = new Date();
+        this.lastEdited = created = new Date();
     }
 
     public Person(String firstName, String lastName, int age, String gender, String email, List<String> hobbies, Date created, Date lastEdited, Address address) {
