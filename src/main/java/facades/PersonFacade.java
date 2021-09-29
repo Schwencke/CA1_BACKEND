@@ -29,7 +29,6 @@ public class PersonFacade implements IPersonFacade {
         return instance;
     }
 
-
     @Override
     public PersonDTO addPerson(String fName, String lName, int age, String gender, String phone, String email, String city, String street, String zip, List<String> hobbies) {
         Person person = new Person(fName, lName, age, gender, phone, email, city, street, zip, hobbies);
