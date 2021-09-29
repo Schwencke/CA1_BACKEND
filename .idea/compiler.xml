@@ -12,7 +12,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="devops-starter" options="-endorseddirs C:\Users\Administrator\Documents\DAT\CA1\Backend\target/endorsed" />
+      <module name="devops-starter" options="-endorseddirs E:\Dropbox\cphbusiness\sem3\CA-1\CA1_BACKEND\target/endorsed" />
     </option>
   </component>
 </project>
