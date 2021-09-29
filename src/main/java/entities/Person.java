@@ -1,9 +1,9 @@
 package entities;
 
 import dtos.PersonDTO;
-
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "person")
 @Entity
@@ -14,7 +14,10 @@ public class Person {
     private Integer id;
     private String firstName;
     private String lastName;
-    private String phone;
+    private int age;
+    private String gender;
+    private String email;
+    private List<String> hobbys;
     @Temporal(TemporalType.TIMESTAMP)
     private Date created;
     @Temporal(TemporalType.TIMESTAMP)
