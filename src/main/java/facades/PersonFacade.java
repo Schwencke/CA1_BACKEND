@@ -31,8 +31,8 @@ public class PersonFacade implements IPersonFacade {
 
 
     @Override
-    public PersonDTO addPerson(String fName, String lName, int age, String gender, String email, String city, String city2, String zip, List<String> hobbies) {
-        Person person = new Person(fName, lName, age,gender,email, city, city2,zip,hobbies);
+    public PersonDTO addPerson(String fName, String lName, int age, String gender, String phone, String email, String city, String street, String zip, List<String> hobbies) {
+        Person person = new Person(fName, lName, age, gender, phone, email, city, street, zip, hobbies);
 
         EntityManager em = getEntityManager();
         try {
@@ -47,12 +47,45 @@ public class PersonFacade implements IPersonFacade {
 
     @Override
     public PersonDTO deletePerson(int id) {
-        return null;
+        EntityManager em = getEntityManager();
+        Person person = em.find(Person.class, id);
+        Phone phone = em.find(Phone.class, id);
+
+        try {
+            em.getTransaction().begin();
+            em.remove(person);
+            em.remove(phone);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return new PersonDTO(person);
     }
 
     @Override
-    public PersonDTO editPerson(PersonDTO p) {
-        return null;
+    public PersonDTO editPerson(PersonDTO pDTO) {
+        EntityManager em = getEntityManager();
+
+        Person person = new Person(pDTO.getfName(),
+                pDTO.getlName(),
+                pDTO.getAge(),
+                pDTO.getGender(),
+                pDTO.getPhone(),
+                pDTO.getEmail(),
+                pDTO.getCity(),
+                pDTO.getStreet(),
+                pDTO.getZip(),
+                pDTO.getHobbies());
+        person.setId(pDTO.getId());
+
+        try {
+            em.getTransaction().begin();
+            em.merge(person);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return new PersonDTO(person);
     }
 
     @Override
@@ -64,9 +97,9 @@ public class PersonFacade implements IPersonFacade {
 
     @Override
     public PersonsDTO getAllPersons() {
-        EntityManager em = EntityManager();
+        EntityManager em = getEntityManager();
         TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p", Person.class);
         List<Person> persons = query.getResultList();
-        return new PersonsDTO;
+        return new PersonsDTO(persons);
     }
 }
