@@ -11,14 +11,15 @@ public interface IPersonFacade {
                                int age,
                                String gender,
                                String email,
+                               String phone,
                                String city,
                                String street,
                                String zip,
                                List<String> hobbies);
 
-    public PersonDTO deletePerson(int id);
+    public void deletePerson(int id);
 
-    public PersonDTO editPerson(PersonDTO p);
+    public void editPerson(PersonDTO p);
 
     public PersonDTO getPerson(int id);
 

@@ -37,6 +37,7 @@ public class PersonFacade implements IPersonFacade {
         try {
             em.getTransaction().begin();
             em.persist(person);
+            em.persist(person.getAddress());
             em.getTransaction().commit();
         } finally {
             em.close();
@@ -44,25 +45,23 @@ public class PersonFacade implements IPersonFacade {
         return new PersonDTO(person);
     }
 
+
     @Override
-    public PersonDTO deletePerson(int id) {
+    public void deletePerson(int id) {
         EntityManager em = getEntityManager();
         Person person = em.find(Person.class, id);
-        Phone phone = em.find(Phone.class, id);
 
         try {
             em.getTransaction().begin();
             em.remove(person);
-            em.remove(phone);
             em.getTransaction().commit();
         } finally {
             em.close();
         }
-        return new PersonDTO(person);
     }
 
     @Override
-    public PersonDTO editPerson(PersonDTO pDTO) {
+    public void editPerson(PersonDTO pDTO) {
         EntityManager em = getEntityManager();
 
         Person person = new Person(pDTO.getfName(),
@@ -80,11 +79,10 @@ public class PersonFacade implements IPersonFacade {
         try {
             em.getTransaction().begin();
             em.merge(person);
-            em.getTransaction().commgit it();
+            em.getTransaction().commit();
         } finally {
             em.close();
         }
-        return new PersonDTO(person);
     }
 
     @Override

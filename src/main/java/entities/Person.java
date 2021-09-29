@@ -18,7 +18,7 @@ public class Person {
     private String gender;
     private String phone;
     private String email;
-    private List<String> hobbys;
+    private List<String> hobbies;
     @Temporal(TemporalType.TIMESTAMP)
     private Date created;
     @Temporal(TemporalType.TIMESTAMP)
@@ -30,23 +30,24 @@ public class Person {
     }
 
 
-    public Person(String firstName, String lastName, int age, String gender, String phone, String email, List<String> hobbys) {
+    public Person(String firstName, String lastName, int age, String gender, String phone, String email,String city, String Street, String zip, List<String> hobbies) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.gender = gender;
         this.phone = phone;
         this.email = email;
-        this.hobbys = hobbys;
+        this.hobbies = hobbies;
+        address = new Address(Street, zip, city);
     }
 
-    public Person(String firstName, String lastName, int age, String gender, String email, List<String> hobbys, Date created, Date lastEdited, Address address) {
+    public Person(String firstName, String lastName, int age, String gender, String email, List<String> hobbies, Date created, Date lastEdited, Address address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.gender = gender;
         this.email = email;
-        this.hobbys = hobbys;
+        this.hobbies = hobbies;
         this.created = created;
         this.lastEdited = lastEdited;
         this.address = address;
@@ -129,12 +130,12 @@ public class Person {
         this.email = email;
     }
 
-    public List<String> getHobbys() {
-        return hobbys;
+    public List<String> getHobbies() {
+        return hobbies;
     }
 
-    public void setHobbys(List<String> hobbys) {
-        this.hobbys = hobbys;
+    public void setHobbies(List<String> hobbys) {
+        this.hobbies = hobbys;
     }
 
     public Integer getId() {

@@ -32,31 +32,30 @@ public class PersonDTO {
         this.id = id;
     }
 
-    public PersonDTO(Person ps) {
+
+//    public PersonDTO(Person ps) {
+//        this.fName = ps.getFirstName();
+//        this.lName = ps.getLastName();
+//        this.st = ps.getAddress().getStreet();
+//        this.zp = ps.getAddress().getZip();
+//        this.ct = ps.getAddress().getCity();
+//        this.id = ps.getId();
+//    }
+
+        public PersonDTO(Person ps) {
+        this.id = ps.getId();
         this.fName = ps.getFirstName();
         this.lName = ps.getLastName();
+        this.age = ps.getAge();
+        this.gender = ps.getGender();
+        this.phone = ps.getPhone();
+        this.email = ps.getEmail();
+        this.hobs = ps.getHobbies();
         this.st = ps.getAddress().getStreet();
         this.zp = ps.getAddress().getZip();
         this.ct = ps.getAddress().getCity();
-        this.id = ps.getId();
     }
 
-
-    public PersonDTO(String fName, String lName, String st, String zp, String ct) {
-        this.fName = fName;
-        this.lName = lName;
-        this.st = st;
-        this.zp = zp;
-        this.ct = ct;
-    }
-
-    public static PersonDTO getDto(Person ps){
-        return new PersonDTO(ps.getFirstName(), ps.getLastName());
-    }
-
-    public static PersonDTO getDtoWithAddress(Person ps, Address ad){
-        return new PersonDTO(ps.getFirstName(), ps.getLastName(), ad.getStreet(), ad.getZip(), ad.getCity());
-    }
 
     public int getAge() {
         return age;
