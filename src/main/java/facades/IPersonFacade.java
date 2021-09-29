@@ -12,7 +12,7 @@ public interface IPersonFacade {
                                String gender,
                                String email,
                                String city,
-                               String city2,
+                               String street,
                                String zip,
                                List<String> hobbies);
 
