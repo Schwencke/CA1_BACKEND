@@ -80,7 +80,7 @@ public class PersonFacade implements IPersonFacade {
         try {
             em.getTransaction().begin();
             em.merge(person);
-            em.getTransaction().commit();
+            em.getTransaction().commgit it();
         } finally {
             em.close();
         }
