@@ -5,7 +5,6 @@ import entities.Hobby;
 import entities.Person;
 import entities.Phone;
 
-import java.util.Date;
 import java.util.List;
 
 public class PersonDTO {
@@ -24,7 +23,7 @@ public class PersonDTO {
         this.email = ps.getEmail();
         this.phones = ps.getPhones();
         this.hobbies = ps.getHobbies();
-        this.address = ps.getAddress();
+        this.address = address.get;
     }
 
     public Integer getId() {

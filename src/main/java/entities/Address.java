@@ -15,6 +15,9 @@ public class Address {
     @Column(name = "street", nullable = false)
     private String street;
 
+    @Column(name = "additional_info", nullable = false)
+    private String additionalInfo;
+
     @OneToMany(mappedBy = "address", cascade = CascadeType.PERSIST)
     private List<Person> persons = new ArrayList<>();
 
@@ -48,5 +51,13 @@ public class Address {
 
     public void setStreet(String street) {
         this.street = street;
+    }
+
+    public String getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
     }
 }
