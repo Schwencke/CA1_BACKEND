@@ -65,26 +65,26 @@ public class PersonFacade implements IPersonFacade {
         }
     }
 
-    @Override
-    public void editPerson(PersonDTO pDTO) {
-        EntityManager em = getEntityManager();
-
-        Person person = new Person(pDTO.getfName(),
-                pDTO.getlName(),
-                pDTO.getEmail(),
-                pDTO.getAddress(),
-                pDTO.getPhones(),
-                pDTO.getHobbies());
-        person.setId(pDTO.getId());
-
-        try {
-            em.getTransaction().begin();
-            em.merge(person);
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
-    }
+//    @Override
+//    public void editPerson(PersonDTO pDTO) {
+//        EntityManager em = getEntityManager();
+//
+//        Person person = new Person(pDTO.getfName(),
+//                pDTO.getlName(),
+//                pDTO.getEmail(),
+//                pDTO.getAddress(),
+//                pDTO.getPhones(),
+//                pDTO.getHobbies());
+//        person.setId(pDTO.getId());
+//
+//        try {
+//            em.getTransaction().begin();
+//            em.merge(person);
+//            em.getTransaction().commit();
+//        } finally {
+//            em.close();
+//        }
+//    }
 
     @Override
     public PersonDTO getPerson(int id) {

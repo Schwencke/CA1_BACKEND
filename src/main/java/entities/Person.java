@@ -23,7 +23,7 @@ public class Person {
     private Address address;
 
     @ManyToMany(mappedBy = "persons", cascade = CascadeType.PERSIST)
-    private List<Hobby> hobbies = new ArrayList<>();
+    private List<Hobby> hobbies;
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST)
     private List<Phone> phones;
@@ -36,7 +36,7 @@ public class Person {
         this.lastName = lastName;
         this.email = email;
         this.phones = phones;
-        this.hobbies.addAll(hobbies);
+        this.hobbies = hobbies;
         this.address = address;
     }
 

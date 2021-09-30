@@ -18,7 +18,7 @@ public interface IPersonFacade {
 
     public void deletePerson(int id);
 
-    public void editPerson(PersonDTO p);
+  //  public void editPerson(PersonDTO p);
 
     public PersonDTO getPerson(int id);
 
