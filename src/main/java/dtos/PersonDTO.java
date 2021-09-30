@@ -1,7 +1,9 @@
 package dtos;
 
+import entities.Address;
 import entities.Hobby;
 import entities.Person;
+import entities.Phone;
 
 import java.util.Date;
 import java.util.List;
@@ -10,93 +12,27 @@ public class PersonDTO {
     private Integer id;
     private String fName;
     private String lName;
-    private int age;
-    private String gender;
-    private String phone;
     private String email;
-    private String st;
-    private String zp;
-    private String ct;
+    private Address address;
+    private List<Phone> phones;
     private List<Hobby> hobbies;
-    private Date created;
-    private Date lastEdited;
 
     public PersonDTO(Person ps) {
         this.id = ps.getId();
         this.fName = ps.getFirstName();
         this.lName = ps.getLastName();
-        this.age = ps.getAge();
-        this.gender = ps.getGender();
-        this.phone = ps.getPhone();
         this.email = ps.getEmail();
+        this.phones = ps.getPhones();
         this.hobbies = ps.getHobbies();
-        this.st = ps.getAddress().getStreet();
-        this.zp = ps.getAddress().getZip();
-        this.ct = ps.getAddress().getCity();
+        this.address = ps.getAddress();
     }
 
-    public int getAge() {
-        return age;
+    public Integer getId() {
+        return id;
     }
 
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public List<Hobby> getHobbies() {
-        return hobbies;
-    }
-
-    public void setHobbies(List<String> hobs) {
-        this.hobbies = hobbies;
-    }
-
-    public String getStreet() {
-        return st;
-    }
-
-    public void setStreet(String srt) {
-        this.st = srt;
-    }
-
-    public String getZip() {
-        return zp;
-    }
-
-    public void setZip(String zp) {
-        this.zp = zp;
-    }
-
-    public String getCity() {
-        return ct;
-    }
-
-    public void setCity(String ct) {
-        this.ct = ct;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getfName() {
@@ -115,45 +51,35 @@ public class PersonDTO {
         this.lName = lName;
     }
 
-    public Integer getId() {
-        return id;
+    public String getEmail() {
+        return email;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public Date getCreated() {
-        return created;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setCreated(Date created) {
-        this.created = created;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
-    public Date getLastEdited() {
-        return lastEdited;
+    public List<Phone> getPhones() {
+        return phones;
     }
 
-    public void setLastEdited(Date lastEdited) {
-        this.lastEdited = lastEdited;
+    public void setPhones(List<Phone> phones) {
+        this.phones = phones;
     }
 
-    @Override
-    public String toString() {
-        return "PersonDTO{" +
-                "id=" + id +
-                ", fName='" + fName + '\'' +
-                ", lName='" + lName + '\'' +
-                ", age=" + age +
-                ", gender='" + gender + '\'' +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                ", srt='" + st + '\'' +
-                ", zp='" + zp + '\'' +
-                ", ct='" + ct + '\'' +
-                ", created=" + created +
-                ", lastEdited=" + lastEdited +
-                '}';
+    public List<Hobby> getHobbies() {
+        return hobbies;
+    }
+
+    public void setHobbies(List<Hobby> hobbies) {
+        this.hobbies = hobbies;
     }
 }

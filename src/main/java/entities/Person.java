@@ -1,7 +1,9 @@
 package entities;
 
 import dtos.PersonDTO;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,23 +16,14 @@ public class Person {
     private Integer id;
     private String firstName;
     private String lastName;
-    private int age;
-    private String gender;
-    private String phone;
     private String email;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date created;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastEdited;
 
     @JoinColumn(name = "address_fk_id", referencedColumnName = "id")
     @ManyToOne
     private Address address;
 
     @ManyToMany(mappedBy = "persons", cascade = CascadeType.PERSIST)
-    private List<Hobby> hobbies;
+    private List<Hobby> hobbies = new ArrayList<>();
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST)
     private List<Phone> phones;
@@ -38,57 +31,13 @@ public class Person {
     public Person() {
     }
 
-    public Person(String firstName, String lastName, int age, String gender, String phone, String email,String city, String Street, String zip, List<Hobby> hobbies) {
+    public Person(String firstName, String lastName, String email, Address address, List<Phone> phones, List<Hobby> hobbies) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.age = age;
-        this.gender = gender;
-        this.phone = phone;
         this.email = email;
-        this.hobbies = hobbies;
-        address = new Address(Street, zip, city);
-        this.created = new Date();
-        this.lastEdited = created;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public List<Hobby> getHobbies() {
-        return hobbies;
-    }
-
-    public void setHobbies(List<Hobby> hobbies) {
-        this.hobbies = hobbies;
+        this.phones = phones;
+        this.hobbies.addAll(hobbies);
+        this.address = address;
     }
 
     public Integer getId() {
@@ -115,20 +64,28 @@ public class Person {
         this.lastName = lastName;
     }
 
-    public Date getCreated() {
-        return created;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCreated(Date created) {
-        this.created = created;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public Date getLastEdited() {
-        return lastEdited;
+    public List<Hobby> getHobbies() {
+        return hobbies;
     }
 
-    public void setLastEdited(Date lastEdited) {
-        this.lastEdited = lastEdited;
+    public void setHobbies(List<Hobby> hobbies) {
+        this.hobbies = hobbies;
+    }
+
+    public List<Phone> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(List<Phone> phones) {
+        this.phones = phones;
     }
 
     public Address getAddress() {

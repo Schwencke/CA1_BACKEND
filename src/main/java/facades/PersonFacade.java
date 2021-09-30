@@ -2,8 +2,10 @@ package facades;
 
 import dtos.PersonDTO;
 import dtos.PersonsDTO;
+import entities.Address;
 import entities.Hobby;
 import entities.Person;
+import entities.Phone;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -31,14 +33,16 @@ public class PersonFacade implements IPersonFacade {
     }
 
     @Override
-    public PersonDTO addPerson(String fName, String lName, int age, String gender, String phone, String email, String city, String street, String zip, List<Hobby> hobbies) {
-        Person person = new Person(fName, lName, age, gender, phone, email, city, street, zip, hobbies);
+    public PersonDTO addPerson(String fName, String lName, String email, Address address, List<Phone> phones, List<Hobby> hobbies) {
+        Person person = new Person(fName, lName, email, address, phones, hobbies);
 
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
             em.persist(person);
             em.persist(person.getAddress());
+            em.persist(person.getPhones());
+            em.persist(person.getHobbies());
             em.getTransaction().commit();
         } finally {
             em.close();
@@ -67,13 +71,9 @@ public class PersonFacade implements IPersonFacade {
 
         Person person = new Person(pDTO.getfName(),
                 pDTO.getlName(),
-                pDTO.getAge(),
-                pDTO.getGender(),
-                pDTO.getPhone(),
                 pDTO.getEmail(),
-                pDTO.getCity(),
-                pDTO.getStreet(),
-                pDTO.getZip(),
+                pDTO.getAddress(),
+                pDTO.getPhones(),
                 pDTO.getHobbies());
         person.setId(pDTO.getId());
 
