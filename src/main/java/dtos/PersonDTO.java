@@ -1,6 +1,6 @@
 package dtos;
 
-import entities.Address;
+import entities.Hobby;
 import entities.Person;
 
 import java.util.Date;
@@ -17,7 +17,7 @@ public class PersonDTO {
     private String st;
     private String zp;
     private String ct;
-    private List<String> hobs;
+    private List<Hobby> hobbies;
     private Date created;
     private Date lastEdited;
 
@@ -29,7 +29,7 @@ public class PersonDTO {
         this.gender = ps.getGender();
         this.phone = ps.getPhone();
         this.email = ps.getEmail();
-        this.hobs = ps.getHobbies();
+        this.hobbies = ps.getHobbies();
         this.st = ps.getAddress().getStreet();
         this.zp = ps.getAddress().getZip();
         this.ct = ps.getAddress().getCity();
@@ -67,12 +67,12 @@ public class PersonDTO {
         this.email = email;
     }
 
-    public List<String> getHobbies() {
-        return hobs;
+    public List<Hobby> getHobbies() {
+        return hobbies;
     }
 
     public void setHobbies(List<String> hobs) {
-        this.hobs = hobs;
+        this.hobbies = hobbies;
     }
 
     public String getStreet() {

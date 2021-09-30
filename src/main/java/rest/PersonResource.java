@@ -16,7 +16,7 @@ import javax.ws.rs.core.Response;
 public class PersonResource {
 
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
-    private static final PersonFacade FACADE =  PersonFacade.getPersonFacade(EMF);
+    private static final PersonFacade FACADE = PersonFacade.getPersonFacade(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     @GET
@@ -29,19 +29,19 @@ public class PersonResource {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getOnId(@PathParam("id")Integer id) {
-        PersonDTO psd = FACADE.getPerson(id);
+    public Response getOnId(@PathParam("id") Integer id) {
+        PersonDTO pDTO = FACADE.getPerson(id);
         return Response.ok()
-                .entity(GSON.toJson(psd)).build();
+                .entity(GSON.toJson(pDTO)).build();
     }
 
     @POST
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(String a)  {
-        PersonDTO psd = GSON.fromJson(a, PersonDTO.class);
-            PersonDTO result = FACADE.addPerson(psd.getfName(),psd.getlName(),psd.getAge(),psd.getGender(),psd.getPhone(),psd.getEmail(), psd.getCity(), psd.getStreet(), psd.getZip(),psd.getHobbies());
-            return Response.ok()
-                    .entity(GSON.toJson(result)).build();
+    public Response create(String a) {
+        PersonDTO pDTO = GSON.fromJson(a, PersonDTO.class);
+        PersonDTO result = FACADE.addPerson(pDTO.getfName(), pDTO.getlName(), pDTO.getAge(), pDTO.getGender(), pDTO.getPhone(), pDTO.getEmail(), pDTO.getCity(), pDTO.getStreet(), pDTO.getZip(), pDTO.getHobbies());
+        return Response.ok()
+                .entity(GSON.toJson(result)).build();
     }
 }

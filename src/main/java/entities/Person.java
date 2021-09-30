@@ -18,19 +18,27 @@ public class Person {
     private String gender;
     private String phone;
     private String email;
-    private List<String> hobbies;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date created;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastEdited;
+
     @JoinColumn(name = "address_fk_id", referencedColumnName = "id")
     @ManyToOne
     private Address address;
 
+    @ManyToMany(mappedBy = "persons", cascade = CascadeType.PERSIST)
+    private List<Hobby> hobbies;
+
+    @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST)
+    private List<Phone> phones;
+
     public Person() {
     }
 
-    public Person(String firstName, String lastName, int age, String gender, String phone, String email,String city, String Street, String zip, List<String> hobbies) {
+    public Person(String firstName, String lastName, int age, String gender, String phone, String email,String city, String Street, String zip, List<Hobby> hobbies) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
@@ -75,11 +83,11 @@ public class Person {
         this.email = email;
     }
 
-    public List<String> getHobbies() {
+    public List<Hobby> getHobbies() {
         return hobbies;
     }
 
-    public void setHobbies(List<String> hobbies) {
+    public void setHobbies(List<Hobby> hobbies) {
         this.hobbies = hobbies;
     }
 

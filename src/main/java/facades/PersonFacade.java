@@ -2,6 +2,7 @@ package facades;
 
 import dtos.PersonDTO;
 import dtos.PersonsDTO;
+import entities.Hobby;
 import entities.Person;
 
 import javax.persistence.EntityManager;
@@ -30,7 +31,7 @@ public class PersonFacade implements IPersonFacade {
     }
 
     @Override
-    public PersonDTO addPerson(String fName, String lName, int age, String gender, String phone, String email, String city, String street, String zip, List<String> hobbies) {
+    public PersonDTO addPerson(String fName, String lName, int age, String gender, String phone, String email, String city, String street, String zip, List<Hobby> hobbies) {
         Person person = new Person(fName, lName, age, gender, phone, email, city, street, zip, hobbies);
 
         EntityManager em = getEntityManager();

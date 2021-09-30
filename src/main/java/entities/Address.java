@@ -11,14 +11,21 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
+
     @Column(name = "street", nullable = false)
     private String street;
+
     @Column(name = "zip", nullable = false)
     private String zip;
+
     @Column(name = "city", nullable = false)
     private String city;
+
     @OneToMany(mappedBy = "address", cascade = CascadeType.PERSIST)
     private List<Person> persons = new ArrayList<>();
+
+    @ManyToOne
+    private CityInfo cityInfo;
 
     public Address() {
     }
