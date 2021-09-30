@@ -15,14 +15,12 @@ public class PersonDTO {
     private List<HobbyDTO> hobbies;
 
     public PersonDTO(Person ps) {
-        PhonesDTO p = new PhonesDTO(ps.getPhones());
-        HobbysDTO h = new HobbysDTO(ps.getHobbies());
         this.id = ps.getId();
         this.fName = ps.getFirstName();
         this.lName = ps.getLastName();
         this.email = ps.getEmail();
-        this.phones = p.getAll();
-        this.hobbies = h.getAll();
+        this.phones = new PhonesDTO(ps.getPhones()).getAll();
+        this.hobbies = new HobbysDTO(ps.getHobbies()).getAll();
         this.address = AddressDTO.getDTO(ps.getAddress());
     }
 
