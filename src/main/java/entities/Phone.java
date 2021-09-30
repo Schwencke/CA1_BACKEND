@@ -19,6 +19,12 @@ public class Phone {
     public Phone() {
     }
 
+    public Phone(String number, String description, Person person) {
+        this.number = number;
+        this.description = description;
+        this.person = person;
+    }
+
     public Integer getId() {
         return id;
     }

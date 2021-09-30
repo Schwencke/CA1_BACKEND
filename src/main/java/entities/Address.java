@@ -15,12 +15,6 @@ public class Address {
     @Column(name = "street", nullable = false)
     private String street;
 
-    @Column(name = "zip", nullable = false)
-    private String zip;
-
-    @Column(name = "city", nullable = false)
-    private String city;
-
     @OneToMany(mappedBy = "address", cascade = CascadeType.PERSIST)
     private List<Person> persons = new ArrayList<>();
 
@@ -30,10 +24,10 @@ public class Address {
     public Address() {
     }
 
-    public Address(String street, String zip, String city) {
+    public Address(String street, List<Person> persons, CityInfo cityInfo) {
         this.street = street;
-        this.zip = zip;
-        this.city = city;
+        this.persons = persons;
+        this.cityInfo = cityInfo;
     }
 
     public void addPerson(Person p) {
@@ -54,21 +48,5 @@ public class Address {
 
     public void setStreet(String street) {
         this.street = street;
-    }
-
-    public String getZip() {
-        return zip;
-    }
-
-    public void setZip(String zip) {
-        this.zip = zip;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
     }
 }

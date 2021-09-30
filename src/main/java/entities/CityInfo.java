@@ -20,6 +20,12 @@ public class CityInfo {
     public CityInfo() {
     }
 
+    public CityInfo(String zipCode, String city, List<Address> addressList) {
+        this.zipCode = zipCode;
+        this.city = city;
+        this.addressList = addressList;
+    }
+
     public Integer getId() {
         return id;
     }
