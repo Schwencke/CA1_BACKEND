@@ -21,28 +21,7 @@ public class PersonDTO {
     private Date created;
     private Date lastEdited;
 
-    public PersonDTO(String fName, String lName) {
-        this.fName = fName;
-        this.lName = lName;
-    }
-
-    public PersonDTO(String fName, String lName, Integer id) {
-        this.fName = fName;
-        this.lName = lName;
-        this.id = id;
-    }
-
-
-//    public PersonDTO(Person ps) {
-//        this.fName = ps.getFirstName();
-//        this.lName = ps.getLastName();
-//        this.st = ps.getAddress().getStreet();
-//        this.zp = ps.getAddress().getZip();
-//        this.ct = ps.getAddress().getCity();
-//        this.id = ps.getId();
-//    }
-
-        public PersonDTO(Person ps) {
+    public PersonDTO(Person ps) {
         this.id = ps.getId();
         this.fName = ps.getFirstName();
         this.lName = ps.getLastName();
@@ -55,7 +34,6 @@ public class PersonDTO {
         this.zp = ps.getAddress().getZip();
         this.ct = ps.getAddress().getCity();
     }
-
 
     public int getAge() {
         return age;

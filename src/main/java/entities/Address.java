@@ -18,7 +18,7 @@ public class Address {
     @Column(name = "city", nullable = false)
     private String city;
     @OneToMany(mappedBy = "address", cascade = CascadeType.PERSIST)
-    private List<Person> occupants;
+    private List<Person> persons = new ArrayList<>();
 
     public Address() {
     }
@@ -27,18 +27,10 @@ public class Address {
         this.street = street;
         this.zip = zip;
         this.city = city;
-        this.occupants = new ArrayList<>();
     }
 
-    public List<Person> getOccupants() {
-        return occupants;
-    }
-
-    public void addOccupants(Person occupant) {
-        this.occupants.add(occupant);
-        if(occupant != null){
-            occupant.setAddress(this);
-        }
+    public void addPerson(Person p) {
+        this.persons.add(p);
     }
 
     public Integer getId() {

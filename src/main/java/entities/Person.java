@@ -23,12 +23,12 @@ public class Person {
     private Date created;
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastEdited;
+    @JoinColumn(name = "address_fk_id", referencedColumnName = "id")
     @ManyToOne
     private Address address;
 
     public Person() {
     }
-
 
     public Person(String firstName, String lastName, int age, String gender, String phone, String email,String city, String Street, String zip, List<String> hobbies) {
         this.firstName = firstName;
@@ -40,64 +40,7 @@ public class Person {
         this.hobbies = hobbies;
         address = new Address(Street, zip, city);
         this.created = new Date();
-        this.lastEdited = created = new Date();
-    }
-
-    public Person(String firstName, String lastName, int age, String gender, String email, List<String> hobbies, Date created, Date lastEdited, Address address) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-        this.gender = gender;
-        this.email = email;
-        this.hobbies = hobbies;
-        this.created = created;
-        this.lastEdited = lastEdited;
-        this.address = address;
-    }
-
-    public Person(String firstName, String lastName, Integer id, Date created) {
-
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.id = id;
-        this.created = created;
-    }
-
-    public Person(String firstName, String lastName) {
-        this.created = new Date();
-        this.lastEdited = created = new Date();
-        this.firstName = firstName;
-        this.lastName = lastName;
-
-    }
-    public Person(String firstName, String lastName,Address address) {
-        this.created = new Date();
-        this.lastEdited = created = new Date();
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-    }
-
-    public Person(String firstName, String lastName, Integer id) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.id = id;
-    }
-
-    public Person(Integer id, String firstName, String lastName, Address address) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-    }
-
-
-
-    public Person fromDTO(PersonDTO dto, Person ps){
-        ps.setFirstName(dto.getfName());
-        ps.setLastName(dto.getlName());
-        ps.lastEdited = new Date();
-        return ps;
+        this.lastEdited = created;
     }
 
     public String getPhone() {
@@ -136,8 +79,8 @@ public class Person {
         return hobbies;
     }
 
-    public void setHobbies(List<String> hobbys) {
-        this.hobbies = hobbys;
+    public void setHobbies(List<String> hobbies) {
+        this.hobbies = hobbies;
     }
 
     public Integer getId() {
@@ -186,7 +129,8 @@ public class Person {
 
     public void setAddress(Address address) {
         this.address = address;
+        if (address != null) {
+            address.addPerson(this);
+        }
     }
-
-
 }
