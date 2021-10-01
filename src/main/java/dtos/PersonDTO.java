@@ -6,8 +6,8 @@ import java.util.List;
 
 public class PersonDTO {
     private Integer id;
-    private String fName;
-    private String lName;
+    private String firstName;
+    private String lastName;
     private String email;
     private String street;
     private String additionalInfo;
@@ -18,15 +18,19 @@ public class PersonDTO {
 
     public PersonDTO(Person person) {
         this.id = person.getId();
-        this.fName = person.getFirstName();
-        this.lName = person.getLastName();
+        this.firstName = person.getFirstName();
+        this.lastName = person.getLastName();
         this.email = person.getEmail();
         this.street = person.getAddress().getStreet();
         this.additionalInfo = person.getAddress().getAdditionalInfo();
         this.zipCode = person.getAddress().getCityInfo().getZipCode();
         this.city = person.getAddress().getCityInfo().getCity();
-        this.phones = new PhonesDTO(person.getPhones()).getAll();
-        this.hobbies = new HobbysDTO(person.getHobbies()).getAll();
+        if (person.getPhones() != null) {
+            this.phones = new PhonesDTO(person.getPhones()).getAll();
+        }
+        if (person.getHobbies() != null) {
+            this.hobbies = new HobbysDTO(person.getHobbies()).getAll();
+        }
     }
 
     public Integer getId() {
@@ -37,20 +41,20 @@ public class PersonDTO {
         this.id = id;
     }
 
-    public String getfName() {
-        return fName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setfName(String fName) {
-        this.fName = fName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getlName() {
-        return lName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setlName(String lName) {
-        this.lName = lName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {

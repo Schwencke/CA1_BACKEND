@@ -2,11 +2,13 @@ package facades;
 
 import dtos.PersonDTO;
 import dtos.PersonsDTO;
+import dtos.PhoneDTO;
 import entities.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PersonFacade implements IPersonFacade {
@@ -30,23 +32,31 @@ public class PersonFacade implements IPersonFacade {
     }
 
     @Override
-    public PersonDTO addPerson(String fName,
-                               String lName,
+    public PersonDTO addPerson(String firstName,
+                               String lastName,
                                String email,
                                String street,
                                String additionalInfo,
                                String zipCode,
-                               String city) {
+                               String city,
+                               List<PhoneDTO> phoneDTOS) {
 
         CityInfo cityInfo = new CityInfo(zipCode, city);
         Address address = new Address(street, additionalInfo, cityInfo);
-        Person person = new Person(fName, lName, email, address);
+        Person person = new Person(firstName, lastName, email, address);
+
+        List<Phone> phones = new ArrayList<>();
+        for (PhoneDTO phoneDTO : phoneDTOS) {
+            phones.add(new Phone(phoneDTO.getNumber(), phoneDTO.getDescription(), person));
+        }
 
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
             em.persist(person);
             em.persist(person.getAddress());
+            em.persist(cityInfo);
+            em.persist(phones);
             em.getTransaction().commit();
         } finally {
             em.close();

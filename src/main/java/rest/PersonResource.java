@@ -41,13 +41,14 @@ public class PersonResource {
     public Response create(String a) {
         PersonDTO pDTO = GSON.fromJson(a, PersonDTO.class);
         PersonDTO result = FACADE.addPerson(
-                pDTO.getfName(),
-                pDTO.getlName(),
+                pDTO.getFirstName(),
+                pDTO.getLastName(),
                 pDTO.getEmail(),
                 pDTO.getStreet(),
                 pDTO.getAdditionalInfo(),
                 pDTO.getZipCode(),
-                pDTO.getCity());
+                pDTO.getCity(),
+                pDTO.getPhones());
         return Response.ok()
                 .entity(GSON.toJson(result)).build();
     }

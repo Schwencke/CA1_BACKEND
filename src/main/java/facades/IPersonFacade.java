@@ -2,9 +2,7 @@ package facades;
 
 import dtos.PersonDTO;
 import dtos.PersonsDTO;
-import entities.Address;
-import entities.Hobby;
-import entities.Phone;
+import dtos.PhoneDTO;
 
 import java.util.List;
 
@@ -15,7 +13,8 @@ public interface IPersonFacade {
                                String street,
                                String additionalInfo,
                                String zipCode,
-                               String city);
+                               String city,
+                               List<PhoneDTO> phones);
 
     public void deletePerson(int id);
 
