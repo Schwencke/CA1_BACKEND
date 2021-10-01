@@ -27,14 +27,10 @@ public class Address {
     public Address() {
     }
 
-    public Address(String street, List<Person> persons, CityInfo cityInfo) {
+    public Address(String street, String additionalInfo, CityInfo cityInfo) {
         this.street = street;
-        this.persons = persons;
+        this.additionalInfo = additionalInfo;
         this.cityInfo = cityInfo;
-    }
-
-    public void addPerson(Person p) {
-        this.persons.add(p);
     }
 
     public Integer getId() {
@@ -59,5 +55,21 @@ public class Address {
 
     public void setAdditionalInfo(String additionalInfo) {
         this.additionalInfo = additionalInfo;
+    }
+
+    public List<Person> getPersons() {
+        return persons;
+    }
+
+    public void setPersons(List<Person> persons) {
+        this.persons = persons;
+    }
+
+    public CityInfo getCityInfo() {
+        return cityInfo;
+    }
+
+    public void setCityInfo(CityInfo cityInfo) {
+        this.cityInfo = cityInfo;
     }
 }

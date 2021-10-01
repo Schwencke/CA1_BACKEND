@@ -9,14 +9,13 @@ public class PhonesDTO {
 
     private List<PhoneDTO> all = new ArrayList<>();
 
-    public PhonesDTO(List<Phone> phoneEntities){
+    public PhonesDTO(List<Phone> phoneEntities) {
         phoneEntities.forEach((phone -> {
             all.add(new PhoneDTO(phone));
         }));
     }
 
-    public  List<PhoneDTO> getAll() {
+    public List<PhoneDTO> getAll() {
         return all;
     }
-
 }

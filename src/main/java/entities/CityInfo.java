@@ -20,10 +20,9 @@ public class CityInfo {
     public CityInfo() {
     }
 
-    public CityInfo(String zipCode, String city, List<Address> addressList) {
+    public CityInfo(String zipCode, String city) {
         this.zipCode = zipCode;
         this.city = city;
-        this.addressList = addressList;
     }
 
     public Integer getId() {

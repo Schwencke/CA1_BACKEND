@@ -21,10 +21,10 @@ public class Hobby {
     public Hobby() {
     }
 
-    public Hobby(String name, String description) {
+    public Hobby(String name, String description, List<Person> persons) {
         this.name = name;
         this.description = description;
-        this.persons = new ArrayList<>();
+        this.persons = persons;
     }
 
     public Integer getId() {

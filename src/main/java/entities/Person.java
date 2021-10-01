@@ -1,10 +1,10 @@
 package entities;
 
-import dtos.PersonDTO;
+
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
+
+
 import java.util.List;
 
 @Table(name = "person")
@@ -31,12 +31,10 @@ public class Person {
     public Person() {
     }
 
-    public Person(String firstName, String lastName, String email, Address address, List<Phone> phones, List<Hobby> hobbies) {
+    public Person(String firstName, String lastName, String email, Address address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.phones = phones;
-        this.hobbies = hobbies;
         this.address = address;
     }
 
@@ -72,6 +70,14 @@ public class Person {
         this.email = email;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
     public List<Hobby> getHobbies() {
         return hobbies;
     }
@@ -86,16 +92,5 @@ public class Person {
 
     public void setPhones(List<Phone> phones) {
         this.phones = phones;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-        if (address != null) {
-            address.addPerson(this);
-        }
     }
 }

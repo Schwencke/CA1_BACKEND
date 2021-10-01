@@ -1,17 +1,19 @@
 package dtos;
 
 import entities.Address;
+import entities.CityInfo;
 
 public class AddressDTO {
     private Integer id;
     private String street;
     private String additionalInfo;
+    private CityInfo cityInfo;
 
-
-
-    public AddressDTO(String street, String additionalInfo) {
-        this.street = street;
-        this.additionalInfo = additionalInfo;
+    public AddressDTO(Address address) {
+        this.id = address.getId();
+        this.street = address.getStreet();
+        this.additionalInfo = address.getAdditionalInfo();
+        this.cityInfo = address.getCityInfo();
     }
 
     public Integer getId() {
@@ -38,7 +40,11 @@ public class AddressDTO {
         this.additionalInfo = additionalInfo;
     }
 
-    public static AddressDTO getDTO(Address address) {
-        return new AddressDTO(address.getStreet(), address.getAdditionalInfo());
+    public CityInfo getCityInfo() {
+        return cityInfo;
+    }
+
+    public void setCityInfo(CityInfo cityInfo) {
+        this.cityInfo = cityInfo;
     }
 }

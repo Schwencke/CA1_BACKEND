@@ -14,7 +14,7 @@ public class HobbysDTO {
         });
     }
 
-    public  List<HobbyDTO> getAll() {
+    public List<HobbyDTO> getAll() {
         return all;
     }
 }

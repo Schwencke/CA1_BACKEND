@@ -35,13 +35,20 @@ public class PersonResource {
                 .entity(GSON.toJson(pDTO)).build();
     }
 
-//    @POST
-//    @Produces({MediaType.APPLICATION_JSON})
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    public Response create(String a) {
-//        PersonDTO pDTO = GSON.fromJson(a, PersonDTO.class);
-//        PersonDTO result = FACADE.addPerson(pDTO.getfName(), pDTO.getlName(), pDTO.getEmail(), pDTO.getAddress(), pDTO.getPhones(), pDTO.getHobbies());
-//        return Response.ok()
-//                .entity(GSON.toJson(result)).build();
-//    }
+    @POST
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response create(String a) {
+        PersonDTO pDTO = GSON.fromJson(a, PersonDTO.class);
+        PersonDTO result = FACADE.addPerson(
+                pDTO.getfName(),
+                pDTO.getlName(),
+                pDTO.getEmail(),
+                pDTO.getStreet(),
+                pDTO.getAdditionalInfo(),
+                pDTO.getZipCode(),
+                pDTO.getCity());
+        return Response.ok()
+                .entity(GSON.toJson(result)).build();
+    }
 }

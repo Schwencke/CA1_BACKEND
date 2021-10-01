@@ -12,9 +12,10 @@ public interface IPersonFacade {
     public PersonDTO addPerson(String fName,
                                String lName,
                                String email,
-                               Address address,
-                               List<Phone> phones,
-                               List<Hobby> hobbies);
+                               String street,
+                               String additionalInfo,
+                               String zipCode,
+                               String city);
 
     public void deletePerson(int id);
 

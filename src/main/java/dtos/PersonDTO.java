@@ -1,8 +1,7 @@
 package dtos;
 
-
 import entities.Person;
-import dtos.PhonesDTO;
+
 import java.util.List;
 
 public class PersonDTO {
@@ -10,18 +9,22 @@ public class PersonDTO {
     private String fName;
     private String lName;
     private String email;
-    private AddressDTO address;
-    private List<PhoneDTO> phones;
-    private List<HobbyDTO> hobbies;
+    private String street;
+    private String additionalInfo;
+    private String zipCode;
+    private String city;
+    private List<PhoneDTO> phonesDTO;
+    private List<HobbyDTO> hobbiesDTO;
 
-    public PersonDTO(Person ps) {
-        this.id = ps.getId();
-        this.fName = ps.getFirstName();
-        this.lName = ps.getLastName();
-        this.email = ps.getEmail();
-        this.phones = new PhonesDTO(ps.getPhones()).getAll();
-        this.hobbies = new HobbysDTO(ps.getHobbies()).getAll();
-        this.address = AddressDTO.getDTO(ps.getAddress());
+    public PersonDTO(Person person) {
+        this.id = person.getId();
+        this.fName = person.getFirstName();
+        this.lName = person.getLastName();
+        this.email = person.getEmail();
+        this.street = person.getAddress().getStreet();
+        this.additionalInfo = person.getAddress().getAdditionalInfo();
+        this.zipCode = person.getAddress().getCityInfo().getZipCode();
+        this.city = person.getAddress().getCityInfo().getCity();
     }
 
     public Integer getId() {
@@ -56,28 +59,51 @@ public class PersonDTO {
         this.email = email;
     }
 
-
-    public AddressDTO getAddress() {
-        return address;
+    public String getStreet() {
+        return street;
     }
 
-    public void setAddress(AddressDTO address) {
-        this.address = address;
+    public void setStreet(String street) {
+        this.street = street;
     }
 
-    public List<PhoneDTO> getPhones() {
-        return phones;
+    public String getAdditionalInfo() {
+        return additionalInfo;
     }
 
-    public void setPhones(List<PhoneDTO> phones) {
-        this.phones = phones;
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
     }
 
-    public List<HobbyDTO> getHobbies() {
-        return hobbies;
+    public String getZipCode() {
+        return zipCode;
     }
 
-    public void setHobbies(List<HobbyDTO> hobbies) {
-        this.hobbies = hobbies;
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public List<PhoneDTO> getPhonesDTO() {
+        return phonesDTO;
+    }
+
+    public void setPhonesDTO(List<PhoneDTO> phonesDTO) {
+        this.phonesDTO = phonesDTO;
+    }
+
+    public List<HobbyDTO> getHobbiesDTO() {
+        return hobbiesDTO;
+    }
+
+    public void setHobbiesDTO(List<HobbyDTO> hobbiesDTO) {
+        this.hobbiesDTO = hobbiesDTO;
     }
 }
