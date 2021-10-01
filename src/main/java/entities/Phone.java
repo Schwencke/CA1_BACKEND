@@ -1,9 +1,6 @@
 package entities;
 
-import dtos.PhoneDTO;
-
 import javax.persistence.*;
-import java.util.List;
 
 @Table(name = "phone")
 @Entity
