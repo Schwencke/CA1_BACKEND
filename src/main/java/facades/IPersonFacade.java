@@ -1,5 +1,6 @@
 package facades;
 
+import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import dtos.PersonsDTO;
 import dtos.PhoneDTO;
@@ -14,7 +15,8 @@ public interface IPersonFacade {
                                String additionalInfo,
                                String zipCode,
                                String city,
-                               List<PhoneDTO> phones);
+                               List<PhoneDTO> phoneDTOS,
+                               List<HobbyDTO> hobbyDTOS);
 
     public void deletePerson(int id);
 

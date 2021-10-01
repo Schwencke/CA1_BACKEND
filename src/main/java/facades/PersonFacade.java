@@ -1,5 +1,6 @@
 package facades;
 
+import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import dtos.PersonsDTO;
 import dtos.PhoneDTO;
@@ -39,24 +40,29 @@ public class PersonFacade implements IPersonFacade {
                                String additionalInfo,
                                String zipCode,
                                String city,
-                               List<PhoneDTO> phoneDTOS) {
+                               List<PhoneDTO> phoneDTOS,
+                               List<HobbyDTO> hobbyDTOS) {
 
-        CityInfo cityInfo = new CityInfo(zipCode, city);
-        Address address = new Address(street, additionalInfo, cityInfo);
-        Person person = new Person(firstName, lastName, email, address);
+        Person person = new Person(firstName, lastName, email, new Address(street, additionalInfo, new CityInfo(zipCode, city)));
 
         List<Phone> phones = new ArrayList<>();
         for (PhoneDTO phoneDTO : phoneDTOS) {
             phones.add(new Phone(phoneDTO.getNumber(), phoneDTO.getDescription(), person));
         }
+        person.setPhones(phones);
+
+        List<Hobby> hobbies = new ArrayList<>();
+        for (HobbyDTO hobbyDTO : hobbyDTOS) {
+            hobbies.add(new Hobby(hobbyDTO.getName(), hobbyDTO.getDescription(), ?));
+        }
+        person.setHobbies(hobbies);
 
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
             em.persist(person);
             em.persist(person.getAddress());
-            em.persist(cityInfo);
-            em.persist(phones);
+            em.persist(person.getAddress().getCityInfo());
             em.getTransaction().commit();
         } finally {
             em.close();

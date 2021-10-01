@@ -48,7 +48,8 @@ public class PersonResource {
                 pDTO.getAdditionalInfo(),
                 pDTO.getZipCode(),
                 pDTO.getCity(),
-                pDTO.getPhones());
+                pDTO.getPhones(),
+                pDTO.getHobbies());
         return Response.ok()
                 .entity(GSON.toJson(result)).build();
     }

@@ -1,9 +1,6 @@
 package entities;
 
-
-
 import javax.persistence.*;
-
 
 import java.util.List;
 

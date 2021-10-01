@@ -10,4 +10,12 @@ public class HobbyDTO {
         this.name = hobby.getName();
         this.description = hobby.getDescription();
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }

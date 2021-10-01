@@ -1,7 +1,6 @@
 package entities;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "hobby")
@@ -19,6 +18,11 @@ public class Hobby {
     private List<Person> persons;
 
     public Hobby() {
+    }
+
+    public Hobby(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 
     public Hobby(String name, String description, List<Person> persons) {
