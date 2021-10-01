@@ -51,9 +51,11 @@ public class PersonFacade implements IPersonFacade {
         }
         person.setPhones(phones);
 
+        List<Person> personList = new ArrayList<>();
+        personList.add(person);
         List<Hobby> hobbies = new ArrayList<>();
         for (HobbyDTO hobbyDTO : hobbyDTOS) {
-            hobbies.add(new Hobby(hobbyDTO.getName(), hobbyDTO.getDescription(), ?));
+            hobbies.add(new Hobby(hobbyDTO.getName(), hobbyDTO.getDescription(), personList));
         }
         person.setHobbies(hobbies);
 

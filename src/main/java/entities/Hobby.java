@@ -62,4 +62,8 @@ public class Hobby {
     public void setPersons(List<Person> persons) {
         this.persons = persons;
     }
+
+    public void addPerson(Person person) {
+        this.id = person.getId();
+    }
 }

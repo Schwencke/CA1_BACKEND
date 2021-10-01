@@ -19,7 +19,7 @@ public class Address {
     private String additionalInfo;
 
     @OneToMany(mappedBy = "address", cascade = CascadeType.PERSIST)
-    private List<Person> persons = new ArrayList<>();
+    private List<Person> persons;
 
     @ManyToOne
     private CityInfo cityInfo;
