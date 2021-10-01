@@ -2,17 +2,17 @@ package facades;
 
 import dtos.PersonDTO;
 import dtos.PersonsDTO;
-import entities.Address;
-import entities.Hobby;
-import entities.Person;
-import entities.Phone;
+import entities.*;
+import javassist.NotFoundException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.List;
 
-public class PersonFacade implements IPersonFacade {
+public class PersonFacade {
 
     private static PersonFacade instance;
     private static EntityManagerFactory emf;
@@ -32,26 +32,27 @@ public class PersonFacade implements IPersonFacade {
         return instance;
     }
 
-    @Override
-    public PersonDTO addPerson(String fName, String lName, String email, Address address, List<Phone> phones, List<Hobby> hobbies) {
-        Person person = new Person(fName, lName, email, address, phones, hobbies);
 
+    public void addPerson(PersonDTO pDto) {
+        Person p = new Person(pDto);
+        Address a = new Address(pDto.getAddress());
+        p.setAddress(a);
         EntityManager em = getEntityManager();
-        try {
+        boolean n = true;
+            TypedQuery<Address> query = em.createQuery("SELECT a FROM Address a WHERE a.street = :street AND a.cityInfo.zipCode = :zipcode AND a.additionalInfo = :additionalInfo", Address.class);
+            query.setParameter("street", a.getStreet());
+            query.setParameter("zipcode", a.getCityInfo().getZipCode());
+            query.setParameter("additionalInfo", a.getAdditionalInfo());
+            a = query.getSingleResult();
+            p.setAddress(a);
+
             em.getTransaction().begin();
-            em.persist(person);
-            em.persist(person.getAddress());
-            em.persist(person.getPhones());
-            em.persist(person.getHobbies());
+            em.persist(p);
             em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
-        return new PersonDTO(person);
     }
 
 
-    @Override
+
     public void deletePerson(int id) {
         EntityManager em = getEntityManager();
         Person person = em.find(Person.class, id);
@@ -86,14 +87,14 @@ public class PersonFacade implements IPersonFacade {
 //        }
 //    }
 
-    @Override
+
     public PersonDTO getPerson(int id) {
         EntityManager em = getEntityManager();
         Person person = em.find(Person.class, id);
         return new PersonDTO(person);
     }
 
-    @Override
+
     public PersonsDTO getAllPersons() {
         EntityManager em = getEntityManager();
         TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p", Person.class);

@@ -1,10 +1,19 @@
 package entities;
 
+import dtos.AddressDTO;
+import dtos.HobbyDTO;
+import dtos.PhoneDTO;
+import dtos.PhonesDTO;
+
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Table(name = "phone")
 @Entity
-public class Phone {
+public class Phone implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -23,6 +32,23 @@ public class Phone {
         this.number = number;
         this.description = description;
         this.person = person;
+    }
+        // created during testing - refactor???
+    public Phone(String number, String description) {
+        this.number = number;
+        this.description = description;
+    }
+
+    public Phone(PhoneDTO dtos) {
+        this.number = dtos.getNumber();
+        this.description = dtos.getDescription();
+
+    }
+
+    public static List<Phone> getPhones(List<PhoneDTO> list){
+        List<Phone> phones = new ArrayList<>();
+        list.forEach(dtos -> phones.add(new Phone(dtos)));
+        return phones;
     }
 
     public Integer getId() {
@@ -56,4 +82,6 @@ public class Phone {
     public void setPerson(Person person) {
         this.person = person;
     }
+
+
 }

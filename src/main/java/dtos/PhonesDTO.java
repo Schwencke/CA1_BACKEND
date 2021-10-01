@@ -15,6 +15,7 @@ public class PhonesDTO {
         }));
     }
 
+
     public  List<PhoneDTO> getAll() {
         return all;
     }

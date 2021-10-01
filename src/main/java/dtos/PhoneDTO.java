@@ -1,7 +1,11 @@
 package dtos;
 
 import entities.Address;
+import entities.Hobby;
 import entities.Phone;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PhoneDTO {
     private String number;
@@ -17,9 +21,12 @@ public class PhoneDTO {
         this.description = phone.getDescription();
     }
 
-    public static PhoneDTO getDTO(Phone phone) {
-        return new PhoneDTO(phone.getNumber(), phone.getDescription());
+    public static List<PhoneDTO> getDtos(List<Phone> phones) {
+        List<PhoneDTO> pDTO = new ArrayList();
+        phones.forEach(phone -> pDTO.add(new PhoneDTO(phone)));
+        return pDTO;
     }
+
 
     public String getNumber() {
         return number;

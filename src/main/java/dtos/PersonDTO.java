@@ -15,13 +15,15 @@ public class PersonDTO {
     private List<HobbyDTO> hobbies;
 
     public PersonDTO(Person ps) {
-        this.id = ps.getId();
+        if (ps.getId() != null){
+            this.id = ps.getId();
+        }
         this.fName = ps.getFirstName();
         this.lName = ps.getLastName();
         this.email = ps.getEmail();
-        this.phones = new PhonesDTO(ps.getPhones()).getAll();
-        this.hobbies = new HobbysDTO(ps.getHobbies()).getAll();
-        this.address = AddressDTO.getDTO(ps.getAddress());
+        this.phones = PhoneDTO.getDtos(ps.getPhones());
+        this.hobbies = HobbyDTO.getDtos(ps.getHobbies());
+        this.address = new AddressDTO(ps.getAddress());
     }
 
     public Integer getId() {

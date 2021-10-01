@@ -1,12 +1,18 @@
 package entities;
 
+import com.google.gson.annotations.Expose;
+import dtos.AddressDTO;
+import dtos.PersonDTO;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Table(name = "address")
 @Entity
-public class Address {
+public class Address implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -18,7 +24,7 @@ public class Address {
     @Column(name = "additional_info", nullable = false)
     private String additionalInfo;
 
-    @OneToMany(mappedBy = "address", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "address", cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
     private List<Person> persons = new ArrayList<>();
 
     @ManyToOne
@@ -31,6 +37,18 @@ public class Address {
         this.street = street;
         this.persons = persons;
         this.cityInfo = cityInfo;
+    }
+    // added during testing - refactor?
+    public Address(String street, CityInfo cityInfo) {
+        this.street = street;
+        this.cityInfo = cityInfo;
+    }
+
+    public Address(AddressDTO a) {
+        this.street = a.getStreet();
+        this.additionalInfo = a.getAdditionalInfo();
+        this.cityInfo = new CityInfo(a.getZipCode(), a.getCity());
+        this.persons = new ArrayList<>();
     }
 
     public void addPerson(Person p) {
@@ -60,4 +78,22 @@ public class Address {
     public void setAdditionalInfo(String additionalInfo) {
         this.additionalInfo = additionalInfo;
     }
+
+    public List<Person> getPersons() {
+        return persons;
+    }
+
+    public void setPersons(List<Person> persons) {
+        this.persons = persons;
+    }
+
+    public CityInfo getCityInfo() {
+        return cityInfo;
+    }
+
+    public void setCityInfo(CityInfo cityInfo) {
+        this.cityInfo = cityInfo;
+    }
+
+
 }

@@ -1,15 +1,19 @@
 package entities;
 
+import com.google.gson.annotations.Expose;
+import dtos.AddressDTO;
 import dtos.PersonDTO;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Table(name = "person")
 @Entity
-public class Person {
+public class Person implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -19,17 +23,19 @@ public class Person {
     private String email;
 
     @JoinColumn(name = "address_fk_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Address address;
 
-    @ManyToMany(mappedBy = "persons", cascade = CascadeType.PERSIST)
+    @ManyToMany(mappedBy = "persons", cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
     private List<Hobby> hobbies;
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
     private List<Phone> phones;
 
     public Person() {
     }
+
+
 
     public Person(String firstName, String lastName, String email, Address address, List<Phone> phones, List<Hobby> hobbies) {
         this.firstName = firstName;
@@ -39,6 +45,15 @@ public class Person {
         this.hobbies = hobbies;
         this.address = address;
     }
+
+    public Person(PersonDTO pDto) {
+        this.firstName = pDto.getfName();
+        this.lastName = pDto.getlName();
+        this.email = pDto.getEmail();
+        this.phones = Phone.getPhones(pDto.getPhones());
+        this.hobbies = Hobby.getHobbies(pDto.getHobbies());
+    }
+
 
     public Integer getId() {
         return id;
@@ -76,6 +91,13 @@ public class Person {
         return hobbies;
     }
 
+    public void addHobbies(Hobby hobby){
+        if (hobby != null){
+            this.hobbies.add(hobby);
+            hobby.getPersons().add(this);
+        }
+    }
+
     public void setHobbies(List<Hobby> hobbies) {
         this.hobbies = hobbies;
     }
@@ -92,10 +114,13 @@ public class Person {
         return address;
     }
 
+
     public void setAddress(Address address) {
         this.address = address;
         if (address != null) {
             address.addPerson(this);
         }
     }
+
+
 }

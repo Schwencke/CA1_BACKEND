@@ -2,26 +2,26 @@ package dtos;
 
 import entities.Address;
 import entities.Hobby;
+import entities.Phone;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HobbyDTO {
     private String name;
     private String description;
-
-    public HobbyDTO(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
 
     public HobbyDTO(Hobby hobby) {
         this.name = hobby.getName();
         this.description = hobby.getDescription();
     }
 
-
-
-    public static HobbyDTO getDTO(Hobby hobby) {
-        return new HobbyDTO(hobby.getName(), hobby.getDescription());
+    public static List<HobbyDTO> getDtos(List<Hobby> hobbys) {
+        List<HobbyDTO> pDTO = new ArrayList();
+        hobbys.forEach(hobby -> pDTO.add(new HobbyDTO(hobby)));
+        return pDTO;
     }
+
 
     public String getName() {
         return name;

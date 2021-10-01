@@ -1,11 +1,14 @@
 package entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Table(name = "city_info")
 @Entity
-public class CityInfo {
+public class CityInfo  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -13,7 +16,6 @@ public class CityInfo {
 
     private String zipCode;
     private String city;
-
     @OneToMany(mappedBy = "cityInfo", cascade = CascadeType.PERSIST)
     private List<Address> addressList;
 
@@ -24,6 +26,12 @@ public class CityInfo {
         this.zipCode = zipCode;
         this.city = city;
         this.addressList = addressList;
+    }
+
+    public CityInfo(String zipCode, String city) {
+        this.zipCode = zipCode;
+        this.city = city;
+        this.addressList = new ArrayList<>();
     }
 
     public Integer getId() {
@@ -57,4 +65,5 @@ public class CityInfo {
     public void setAddressList(List<Address> addressList) {
         this.addressList = addressList;
     }
+
 }

@@ -7,9 +7,9 @@ public class CityInfoDTO {
     private String zipCode;
     private String city;
 
-    public CityInfoDTO(String zipCode, String city) {
-        this.zipCode = zipCode;
-        this.city = city;
+    public CityInfoDTO(CityInfo cityInfo) {
+        this.zipCode = cityInfo.getZipCode();
+        this.city = cityInfo.getCity();
     }
 
     public String getZipCode() {
@@ -28,7 +28,4 @@ public class CityInfoDTO {
         this.city = city;
     }
 
-    public static CityInfoDTO getDTO(CityInfo cityInfo) {
-        return new CityInfoDTO(cityInfo.getZipCode(), cityInfo.getCity());
-    }
 }

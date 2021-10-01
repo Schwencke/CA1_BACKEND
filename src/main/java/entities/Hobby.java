@@ -1,12 +1,16 @@
 package entities;
 
+import dtos.HobbyDTO;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Table(name = "hobby")
 @Entity
-public class Hobby {
+public class Hobby implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -25,6 +29,17 @@ public class Hobby {
         this.name = name;
         this.description = description;
         this.persons = new ArrayList<>();
+    }
+
+    public Hobby(HobbyDTO hDTO){
+        this.name = hDTO.getName();
+        this.description = hDTO.getDescription();
+    }
+
+    public static List<Hobby> getHobbies(List<HobbyDTO> list){
+        List<Hobby> hobbies = new ArrayList<>();
+        list.forEach(dtos -> hobbies.add(new Hobby(dtos)));
+        return hobbies;
     }
 
     public Integer getId() {
@@ -58,4 +73,6 @@ public class Hobby {
     public void setPersons(List<Person> persons) {
         this.persons = persons;
     }
+
+
 }
