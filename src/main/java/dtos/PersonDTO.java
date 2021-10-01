@@ -1,7 +1,10 @@
 package dtos;
 
+import entities.Hobby;
 import entities.Person;
+import entities.Phone;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PersonDTO {
@@ -13,8 +16,8 @@ public class PersonDTO {
     private String additionalInfo;
     private String zipCode;
     private String city;
-    private List<PhoneDTO> phonesDTO;
-    private List<HobbyDTO> hobbiesDTO;
+    private List<Phone> phones;
+    private List<Hobby> hobbies;
 
     public PersonDTO(Person person) {
         this.id = person.getId();
@@ -25,6 +28,8 @@ public class PersonDTO {
         this.additionalInfo = person.getAddress().getAdditionalInfo();
         this.zipCode = person.getAddress().getCityInfo().getZipCode();
         this.city = person.getAddress().getCityInfo().getCity();
+        this.phones = PhoneDTO.getDTOS(person.getPhones());
+        //this.hobbies = person.getHobbies();
     }
 
     public Integer getId() {
@@ -91,19 +96,19 @@ public class PersonDTO {
         this.city = city;
     }
 
-    public List<PhoneDTO> getPhonesDTO() {
-        return phonesDTO;
+    public List<Phone> getPhones() {
+        return phones;
     }
 
-    public void setPhonesDTO(List<PhoneDTO> phonesDTO) {
-        this.phonesDTO = phonesDTO;
+    public void setPhones(List<Phone> phones) {
+        this.phones = phones;
     }
 
-    public List<HobbyDTO> getHobbiesDTO() {
-        return hobbiesDTO;
+    public List<Hobby> getHobbies() {
+        return hobbies;
     }
 
-    public void setHobbiesDTO(List<HobbyDTO> hobbiesDTO) {
-        this.hobbiesDTO = hobbiesDTO;
+    public void setHobbies(List<Hobby> hobbies) {
+        this.hobbies = hobbies;
     }
 }
