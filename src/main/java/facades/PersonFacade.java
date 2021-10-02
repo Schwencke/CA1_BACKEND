@@ -46,13 +46,19 @@ public class PersonFacade {
         }
 
         List<Hobby> newHobbyList = new ArrayList<>();
+        person.getHobbies().forEach(hob -> {
+            if (hob.getId() == 0){
+               newHobbyList.add(makeHobby(em, hob));
+            }
+        });
+
         person.getHobbies().forEach(hobby -> {
             hobby = em.find(Hobby.class, hobby.getId());
             if (!hobby.getPersons().contains(person)){
-            hobby.addPerson(person);}
+                hobby.addPerson(person);}
             newHobbyList.add(hobby);
-
         });
+
         person.setHobbies(newHobbyList);
 
         person.getPhones().forEach(phone -> {
@@ -79,6 +85,13 @@ public class PersonFacade {
         return cinf;
     }
 
+    private Hobby makeHobby(EntityManager em,Hobby hb){
+
+     em.getTransaction().begin();
+     em.persist(hb);
+     em.getTransaction().commit();
+     return hb;
+    }
 
     public Address checkAddress(EntityManager em,Person p){
         Address address;
