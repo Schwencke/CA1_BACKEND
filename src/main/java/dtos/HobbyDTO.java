@@ -1,17 +1,17 @@
 package dtos;
 
-import entities.Address;
-import entities.Hobby;
-import entities.Phone;
 
+import entities.Hobby;
 import java.util.ArrayList;
 import java.util.List;
 
 public class HobbyDTO {
+    private int id;
     private String name;
     private String description;
 
     public HobbyDTO(Hobby hobby) {
+        this.id = hobby.getId();
         this.name = hobby.getName();
         this.description = hobby.getDescription();
     }
@@ -37,5 +37,13 @@ public class HobbyDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

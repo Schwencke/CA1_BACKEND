@@ -51,6 +51,12 @@ public class Address implements Serializable {
         this.persons = new ArrayList<>();
     }
 
+    public Address(String street, String additionalInfo, CityInfo cityInfo) {
+        this.street = street;
+        this.additionalInfo = additionalInfo;
+        this.cityInfo = cityInfo;
+    }
+
     public void addPerson(Person p) {
         this.persons.add(p);
     }

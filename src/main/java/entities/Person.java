@@ -50,6 +50,7 @@ public class Person implements Serializable {
         this.firstName = pDto.getfName();
         this.lastName = pDto.getlName();
         this.email = pDto.getEmail();
+        this.address = new Address(pDto.getAddress());
         this.phones = Phone.getPhones(pDto.getPhones());
         this.hobbies = Hobby.getHobbies(pDto.getHobbies());
     }

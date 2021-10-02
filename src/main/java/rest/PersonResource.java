@@ -11,7 +11,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-//Todo Remove or change relevant parts before ACTUAL use
 @Path("person")
 public class PersonResource {
 
@@ -38,7 +37,7 @@ public class PersonResource {
     @POST
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(String a) {
+    public Response create(String a) throws Exception {
         PersonDTO pDTO = GSON.fromJson(a, PersonDTO.class);
         FACADE.addPerson(pDTO);
         return Response.ok().build();

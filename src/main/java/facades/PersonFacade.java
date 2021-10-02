@@ -3,8 +3,6 @@ package facades;
 import dtos.PersonDTO;
 import dtos.PersonsDTO;
 import entities.*;
-import javassist.NotFoundException;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
@@ -33,25 +31,68 @@ public class PersonFacade {
     }
 
 
-    public void addPerson(PersonDTO pDto) {
-        Person p = new Person(pDto);
-        Address a = new Address(pDto.getAddress());
-        p.setAddress(a);
-        EntityManager em = getEntityManager();
-        boolean n = true;
-            TypedQuery<Address> query = em.createQuery("SELECT a FROM Address a WHERE a.street = :street AND a.cityInfo.zipCode = :zipcode AND a.additionalInfo = :additionalInfo", Address.class);
-            query.setParameter("street", a.getStreet());
-            query.setParameter("zipcode", a.getCityInfo().getZipCode());
-            query.setParameter("additionalInfo", a.getAdditionalInfo());
-            a = query.getSingleResult();
-            p.setAddress(a);
 
-            em.getTransaction().begin();
-            em.persist(p);
-            em.getTransaction().commit();
+
+    public void addPerson(PersonDTO pDto) throws Exception {
+        EntityManager em = getEntityManager();
+
+        Person person;
+        person = new Person(pDto);
+        if (checkAddress(em,person) != null){
+            person.setAddress(checkAddress(em,person));
+        }
+        if (checkCity(em,person.getAddress().getCityInfo()) != null){
+            person.getAddress().setCityInfo(checkCity(em,person.getAddress().getCityInfo()));
+        }
+
+        List<Hobby> newHobbyList = new ArrayList<>();
+        person.getHobbies().forEach(hobby -> {
+            hobby = em.find(Hobby.class, hobby.getId());
+            if (!hobby.getPersons().contains(person)){
+            hobby.addPerson(person);}
+            newHobbyList.add(hobby);
+
+        });
+        person.setHobbies(newHobbyList);
+
+        person.getPhones().forEach(phone -> {
+            phone.setPerson(person);
+        });
+        em.getTransaction().begin();
+        em.persist(person);
+        em.merge(person.getAddress().getCityInfo());
+        em.persist(person.getAddress());
+        em.getTransaction().commit();
     }
 
 
+    private CityInfo checkCity(EntityManager em,CityInfo cityInfo) {
+        CityInfo cinf;
+        try{
+            TypedQuery<CityInfo> query = em.createQuery("SELECT c FROM CityInfo c WHERE c.zipCode = :zipCode AND c.city = :city", CityInfo.class);
+            query.setParameter("zipCode", cityInfo.getZipCode());
+            query.setParameter("city", cityInfo.getCity());
+            cinf = query.getSingleResult();
+        }catch (NoResultException e){
+            return null;
+        }
+        return cinf;
+    }
+
+
+    public Address checkAddress(EntityManager em,Person p){
+        Address address;
+        try{
+        TypedQuery<Address> query = em.createQuery("SELECT a FROM Address a WHERE a.street = :street AND a.cityInfo.zipCode = :zipcode AND a.additionalInfo = :additionalInfo", Address.class);
+        query.setParameter("street", p.getAddress().getStreet());
+        query.setParameter("zipcode", p.getAddress().getCityInfo().getZipCode());
+        query.setParameter("additionalInfo", p.getAddress().getAdditionalInfo());
+        address = query.getSingleResult();
+        }catch (NoResultException e){
+          return null;
+        }
+        return address;
+    }
 
     public void deletePerson(int id) {
         EntityManager em = getEntityManager();

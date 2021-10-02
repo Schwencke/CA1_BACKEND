@@ -32,6 +32,7 @@ public class Hobby implements Serializable {
     }
 
     public Hobby(HobbyDTO hDTO){
+        this.id = hDTO.getId();
         this.name = hDTO.getName();
         this.description = hDTO.getDescription();
     }
@@ -70,8 +71,8 @@ public class Hobby implements Serializable {
         return persons;
     }
 
-    public void setPersons(List<Person> persons) {
-        this.persons = persons;
+    public void addPerson(Person person) {
+        this.persons.add(person);
     }
 
 
