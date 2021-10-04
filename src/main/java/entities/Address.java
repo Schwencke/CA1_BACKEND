@@ -60,6 +60,11 @@ public class Address implements Serializable {
         this.cityInfo = cityInfo;
     }
 
+    public Address(String street, String additionalInfo) {
+        this.street = street;
+        this.additionalInfo = additionalInfo;
+    }
+
     public void addPerson(Person p) {
         this.persons.add(p);
     }
