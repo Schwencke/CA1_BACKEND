@@ -48,6 +48,6 @@ public class PersonResource {
     public Response edit(String a){
         PersonDTO pDTO = GSON.fromJson(a, PersonDTO.class);
         FACADE.editPerson(pDTO);
-        return Response.ok().build();
+        return Response.ok().entity(GSON.toJson(pDTO)).build();
     }
 }
