@@ -125,7 +125,7 @@ public class PersonFacade {
     }
 
 
-    //TODO: fejlhåndtering + slettet eksisterende parameter hvis de ikke er med i posten
+    //TODO: fejlhåndtering
     public void editPerson(PersonDTO pDTO) {
         EntityManager em = getEntityManager();
        Person dtoPs = new Person();
@@ -134,11 +134,8 @@ public class PersonFacade {
        Person ps;
        Address ad = dtoPs.getAddress();
 
-
         try {
             ps = em.find(Person.class, pDTO.getId());
-           // ad = em.find(Address.class, pDTO.getAddress().getId());
-
 
             //****//PHONE HANDLING//****//
             List<Phone> phl = new ArrayList<>(ps.getPhones());
@@ -187,36 +184,13 @@ public class PersonFacade {
             //****//HOBBY HANDLING//****//
 
 
-
-
-//            pDTO.getPhones().forEach(phone -> {
-//                phl.add(em.find(Phone.class, phone.getId()));
-//            });
-//            pDTO.getHobbies().forEach(hobby -> {
-//                hby.add(em.find(Hobby.class, hobby.getId()));
-//            });
-//
-//            pDTO.getPhones().forEach(phone ->{
-//                phl.forEach(ph -> {
-//                    ph.setDescription(phone.getDescription());
-//                    ph.setNumber(phone.getNumber());
-//                });
-//            });
-//            pDTO.getHobbies().forEach(hobby -> {
-//                hby.forEach(hb -> {
-//                    hb.setDescription(hobby.getDescription());
-//                    hb.setName(hobby.getName());
-//                });
-//            });
-
-           ps.setAddress(ad);
+            ps.setAddress(ad);
             ps.setFirstName(pDTO.getfName());
             ps.setLastName(pDTO.getlName());
             ps.setEmail(pDTO.getEmail());
 
             em.getTransaction().begin();
             em.merge(ps);
-           // em.merge(ps.getAddress());
             em.getTransaction().commit();
         } finally {
             em.close();
@@ -238,58 +212,4 @@ public class PersonFacade {
         return new PersonsDTO(persons);
     }
 
-
-//    public void editTheFuckOutOfAPerson(PersonDTO pDTO){
-//        EntityManager em = getEntityManager();
-//        Person dtoPerson = new Person();
-//        dtoPerson = dtoPerson.fromDTO(pDTO, dtoPerson);
-//        Person ps = new Person();
-//        try {
-//            ps = em.find(Person.class, ps.getId());
-//
-//            List<Phone> phones = new ArrayList<>();
-//            phones.addAll(ps.getPhones());
-//            phones.forEach(ps::removePhone);
-//            Phone alreadyPhone = new Phone();
-//            pDTO.getPhones().forEach(ph -> {
-//                Phone phone = checkPhone(ph);
-//                if (phone == null){
-//                    ps.addPhone(ph);
-//                } else if (phone.getPerson().getId().equals(ph.getId())){
-//                    ps.addPhone(phone);
-//                } else {
-//                    alreadyPhone.setNumber(phone.getNumber());
-//                }
-//            });
-//
-//            if (alreadyPhone.getNumber() != null){
-//                // number already in use
-//            }
-//
-//            List<Hobby> hobbies = new ArrayList<Hobby>(ps.getHobbies());
-//            hobbies.forEach(hobby -> ps.removeHobby(hobby));
-//            Hobby failHobby = new Hobby();
-//            pDTO.getHobbies().forEach(newHobby -> {
-//                Hobby hob = em.find(Hobby.class, newHobby.getName());
-//                if (hob == null) {
-//                    failHobby.setName(newHobby.getName()); //Fill the failHobby to make sure to be able to throw exception when foreach is finished
-//                } else {
-//                    p.addHobbies(hob);
-//                }
-//            });
-//
-//
-//
-//
-//
-//
-//
-//
-//        }catch (Exception e){
-//            // not found exception
-//        }finally {
-//            em.close();
-//        }
-//
-//    }
 }
