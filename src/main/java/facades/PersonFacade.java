@@ -125,7 +125,7 @@ public class PersonFacade {
 
 
     //TODO: fejlhåndtering
-    public void editPerson(PersonDTO pDTO) {
+    public PersonDTO editPerson(PersonDTO pDTO) {
         EntityManager em = getEntityManager();
        Person dtoPs = new Person();
        dtoPs = dtoPs.fromDTO(pDTO, dtoPs);
@@ -194,6 +194,7 @@ public class PersonFacade {
         } finally {
             em.close();
         }
+        return pDTO;
     }
 
 
