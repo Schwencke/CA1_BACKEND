@@ -1,0 +1,85 @@
+package dtos;
+
+
+import entities.Person;
+import dtos.PhonesDTO;
+import java.util.List;
+
+public class PersonDTO {
+    private Integer id;
+    private String fName;
+    private String lName;
+    private String email;
+    private AddressDTO address;
+    private List<PhoneDTO> phones;
+    private List<HobbyDTO> hobbies;
+
+    public PersonDTO(Person ps) {
+        if (ps.getId() != null){
+            this.id = ps.getId();
+        }
+        this.fName = ps.getFirstName();
+        this.lName = ps.getLastName();
+        this.email = ps.getEmail();
+        this.phones = PhoneDTO.getDtos(ps.getPhones());
+        this.hobbies = HobbyDTO.getDtos(ps.getHobbies());
+        this.address = new AddressDTO(ps.getAddress());
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getfName() {
+        return fName;
+    }
+
+    public void setfName(String fName) {
+        this.fName = fName;
+    }
+
+    public String getlName() {
+        return lName;
+    }
+
+    public void setlName(String lName) {
+        this.lName = lName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+
+    public AddressDTO getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressDTO address) {
+        this.address = address;
+    }
+
+    public List<PhoneDTO> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(List<PhoneDTO> phones) {
+        this.phones = phones;
+    }
+
+    public List<HobbyDTO> getHobbies() {
+        return hobbies;
+    }
+
+    public void setHobbies(List<HobbyDTO> hobbies) {
+        this.hobbies = hobbies;
+    }
+}
