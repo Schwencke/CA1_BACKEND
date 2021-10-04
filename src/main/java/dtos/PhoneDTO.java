@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PhoneDTO {
+    private int id;
     private String number;
     private String description;
 
@@ -17,6 +18,9 @@ public class PhoneDTO {
     }
 
     public PhoneDTO(Phone phone) {
+        if (phone.getId() != null){
+            this.id = phone.getId();
+        }
         this.number = phone.getNumber();
         this.description = phone.getDescription();
     }
@@ -27,6 +31,15 @@ public class PhoneDTO {
         return pDTO;
     }
 
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getNumber() {
         return number;

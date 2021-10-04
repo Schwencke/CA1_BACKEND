@@ -1,8 +1,11 @@
 package facades;
 
+import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import dtos.PersonsDTO;
 import entities.*;
+import javassist.NotFoundException;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
@@ -93,6 +96,20 @@ public class PersonFacade {
      return hb;
     }
 
+    public Phone checkPhone(Phone phone){
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Phone> query = em.createQuery("SELECT p FROM Phone p WHERE p.number = :number", Phone.class);
+            query.setParameter("number", phone.getNumber());
+            return query.getSingleResult();
+        } catch (Exception e) {
+            return null;
+            //add specific error?
+        } finally {
+            em.close();
+        }
+    }
+
     public Address checkAddress(EntityManager em,Person p){
         Address address;
         try{
@@ -107,39 +124,104 @@ public class PersonFacade {
         return address;
     }
 
-    public void deletePerson(int id) {
+
+    //TODO: fejlhåndtering + slettet eksisterende parameter hvis de ikke er med i posten
+    public void editPerson(PersonDTO pDTO) {
         EntityManager em = getEntityManager();
-        Person person = em.find(Person.class, id);
+       Person dtoPs = new Person();
+       dtoPs = dtoPs.fromDTO(pDTO, dtoPs);
+
+       Person ps;
+       Address ad = dtoPs.getAddress();
+
 
         try {
+            ps = em.find(Person.class, pDTO.getId());
+           // ad = em.find(Address.class, pDTO.getAddress().getId());
+
+
+            //****//PHONE HANDLING//****//
+            List<Phone> phl = new ArrayList<>(ps.getPhones());
+            Phone alreadyInUse = new Phone();
+            phl.forEach(ps::removePhone);
+
+            dtoPs.getPhones().forEach(newPhones -> {
+                if (newPhones.getId() != null){
+                   Phone phone = em.find(Phone.class, newPhones.getId());
+                    phone.setDescription(newPhones.getDescription());
+                    phone.setNumber(newPhones.getNumber());
+                    ps.addPhone(phone);
+                } else {
+            Phone phone = checkPhone(newPhones);
+            if(phone == null){
+                ps.addPhone(newPhones);
+            } else if(phone.getPerson().getId() != null && phone.getPerson().getId().equals(ps.getId())) {
+                ps.addPhone(phone);
+            }else {
+
+                alreadyInUse.setNumber(phone.getNumber());
+            }
+            } });
+            if (alreadyInUse.getNumber() != null){
+                System.out.println("Nummeret eksistere allerede");
+                //TODO: implement errorhandler
+            }
+            //****//PHONE HANDLING//****//
+
+            //****//HOBBY HANDLING//****//
+            List<Hobby> hby = new ArrayList<>(ps.getHobbies());
+            Hobby notFoundHobby = new Hobby();
+            hby.forEach(ps::removeHobby);
+            dtoPs.getHobbies().forEach(newHobbies -> {
+                Hobby hobby = em.find(Hobby.class, newHobbies.getId());
+                if (hobby == null){
+                    notFoundHobby.setName(newHobbies.getName());
+                } else {
+                    ps.addHobbies(hobby);
+                }
+            });
+            if (notFoundHobby.getName() != null){
+                System.out.println("hobby not found");
+                //TODO: implement errorhandler
+            }
+            //****//HOBBY HANDLING//****//
+
+
+
+
+//            pDTO.getPhones().forEach(phone -> {
+//                phl.add(em.find(Phone.class, phone.getId()));
+//            });
+//            pDTO.getHobbies().forEach(hobby -> {
+//                hby.add(em.find(Hobby.class, hobby.getId()));
+//            });
+//
+//            pDTO.getPhones().forEach(phone ->{
+//                phl.forEach(ph -> {
+//                    ph.setDescription(phone.getDescription());
+//                    ph.setNumber(phone.getNumber());
+//                });
+//            });
+//            pDTO.getHobbies().forEach(hobby -> {
+//                hby.forEach(hb -> {
+//                    hb.setDescription(hobby.getDescription());
+//                    hb.setName(hobby.getName());
+//                });
+//            });
+
+           ps.setAddress(ad);
+            ps.setFirstName(pDTO.getfName());
+            ps.setLastName(pDTO.getlName());
+            ps.setEmail(pDTO.getEmail());
+
             em.getTransaction().begin();
-            em.remove(person);
+            em.merge(ps);
+           // em.merge(ps.getAddress());
             em.getTransaction().commit();
         } finally {
             em.close();
         }
     }
-
-//    @Override
-//    public void editPerson(PersonDTO pDTO) {
-//        EntityManager em = getEntityManager();
-//
-//        Person person = new Person(pDTO.getfName(),
-//                pDTO.getlName(),
-//                pDTO.getEmail(),
-//                pDTO.getAddress(),
-//                pDTO.getPhones(),
-//                pDTO.getHobbies());
-//        person.setId(pDTO.getId());
-//
-//        try {
-//            em.getTransaction().begin();
-//            em.merge(person);
-//            em.getTransaction().commit();
-//        } finally {
-//            em.close();
-//        }
-//    }
 
 
     public PersonDTO getPerson(int id) {
@@ -155,4 +237,59 @@ public class PersonFacade {
         List<Person> persons = query.getResultList();
         return new PersonsDTO(persons);
     }
+
+
+//    public void editTheFuckOutOfAPerson(PersonDTO pDTO){
+//        EntityManager em = getEntityManager();
+//        Person dtoPerson = new Person();
+//        dtoPerson = dtoPerson.fromDTO(pDTO, dtoPerson);
+//        Person ps = new Person();
+//        try {
+//            ps = em.find(Person.class, ps.getId());
+//
+//            List<Phone> phones = new ArrayList<>();
+//            phones.addAll(ps.getPhones());
+//            phones.forEach(ps::removePhone);
+//            Phone alreadyPhone = new Phone();
+//            pDTO.getPhones().forEach(ph -> {
+//                Phone phone = checkPhone(ph);
+//                if (phone == null){
+//                    ps.addPhone(ph);
+//                } else if (phone.getPerson().getId().equals(ph.getId())){
+//                    ps.addPhone(phone);
+//                } else {
+//                    alreadyPhone.setNumber(phone.getNumber());
+//                }
+//            });
+//
+//            if (alreadyPhone.getNumber() != null){
+//                // number already in use
+//            }
+//
+//            List<Hobby> hobbies = new ArrayList<Hobby>(ps.getHobbies());
+//            hobbies.forEach(hobby -> ps.removeHobby(hobby));
+//            Hobby failHobby = new Hobby();
+//            pDTO.getHobbies().forEach(newHobby -> {
+//                Hobby hob = em.find(Hobby.class, newHobby.getName());
+//                if (hob == null) {
+//                    failHobby.setName(newHobby.getName()); //Fill the failHobby to make sure to be able to throw exception when foreach is finished
+//                } else {
+//                    p.addHobbies(hob);
+//                }
+//            });
+//
+//
+//
+//
+//
+//
+//
+//
+//        }catch (Exception e){
+//            // not found exception
+//        }finally {
+//            em.close();
+//        }
+//
+//    }
 }

@@ -25,7 +25,10 @@ public class Hobby implements Serializable {
     public Hobby() {
     }
 
-    public Hobby(String name, String description) {
+    public Hobby(int id, String name, String description) {
+        if(id != 0){
+            this.id = id;
+        }
         this.name = name;
         this.description = description;
         this.persons = new ArrayList<>();
@@ -37,11 +40,13 @@ public class Hobby implements Serializable {
         this.description = hDTO.getDescription();
     }
 
+
     public static List<Hobby> getHobbies(List<HobbyDTO> list){
         List<Hobby> hobbies = new ArrayList<>();
         list.forEach(dtos -> hobbies.add(new Hobby(dtos)));
         return hobbies;
     }
+
 
     public Integer getId() {
         return id;

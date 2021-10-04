@@ -42,4 +42,12 @@ public class PersonResource {
         FACADE.addPerson(pDTO);
         return Response.ok().build();
     }
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response edit(String a){
+        PersonDTO pDTO = GSON.fromJson(a, PersonDTO.class);
+        FACADE.editPerson(pDTO);
+        return Response.ok().build();
+    }
 }

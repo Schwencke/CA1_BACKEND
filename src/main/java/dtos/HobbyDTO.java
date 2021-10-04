@@ -1,7 +1,11 @@
 package dtos;
 
 
+import entities.Address;
 import entities.Hobby;
+import entities.Person;
+import entities.Phone;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +25,8 @@ public class HobbyDTO {
         hobbys.forEach(hobby -> pDTO.add(new HobbyDTO(hobby)));
         return pDTO;
     }
+
+
 
 
     public String getName() {

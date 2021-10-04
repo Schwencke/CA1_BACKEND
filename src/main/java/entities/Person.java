@@ -29,7 +29,7 @@ public class Person implements Serializable {
     @ManyToMany(mappedBy = "persons", cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
     private List<Hobby> hobbies;
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST,fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Phone> phones;
 
     public Person() {
@@ -53,6 +53,16 @@ public class Person implements Serializable {
         this.address = new Address(pDto.getAddress());
         this.phones = Phone.getPhones(pDto.getPhones());
         this.hobbies = Hobby.getHobbies(pDto.getHobbies());
+    }
+
+    public Person fromDTO(PersonDTO dto, Person ps){
+        ps.setFirstName(dto.getfName());
+        ps.setLastName(dto.getlName());
+        ps.setEmail(dto.getEmail());
+        ps.setPhones(Phone.getPhones(dto.getPhones()));
+        ps.setHobbies(Hobby.getHobbies(dto.getHobbies()));
+        ps.setAddress(new Address(dto.getAddress()));
+        return ps;
     }
 
 
@@ -92,10 +102,32 @@ public class Person implements Serializable {
         return hobbies;
     }
 
-    public void addHobbies(Hobby hobby){
+
+    public void addPhone(Phone phone) {
+        if (phone != null){
+            this.phones.add(phone);
+            phone.setPerson(this);
+        }
+    }
+
+    public void removePhone(Phone phone) {
+        if (phone != null){
+            this.phones.remove(phone);
+            phone.setPerson(null);
+        }
+    }
+
+    public void addHobbies(Hobby hobby) {
         if (hobby != null){
             this.hobbies.add(hobby);
             hobby.getPersons().add(this);
+        }
+    }
+
+    public void removeHobby(Hobby hobby) {
+        if (hobby != null){
+            this.hobbies.remove(hobby);
+            hobby.getPersons().remove(this);
         }
     }
 

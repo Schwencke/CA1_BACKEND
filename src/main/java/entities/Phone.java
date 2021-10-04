@@ -33,13 +33,17 @@ public class Phone implements Serializable {
         this.description = description;
         this.person = person;
     }
-        // created during testing - refactor???
-    public Phone(String number, String description) {
+
+    public Phone(int id, String number, String description) {
+        if (id != 0){
+            this.id = id;
+        }
         this.number = number;
         this.description = description;
     }
 
     public Phone(PhoneDTO dtos) {
+        this.id = dtos.getId();
         this.number = dtos.getNumber();
         this.description = dtos.getDescription();
 
@@ -50,6 +54,7 @@ public class Phone implements Serializable {
         list.forEach(dtos -> phones.add(new Phone(dtos)));
         return phones;
     }
+
 
     public Integer getId() {
         return id;
