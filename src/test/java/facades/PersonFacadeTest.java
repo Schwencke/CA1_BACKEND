@@ -41,15 +41,15 @@ class PersonFacadeTest {
         c1 = new CityInfo("3700", "Rønne");
         a1.setCityInfo(c1);
 
-        t1 = new Phone("11111111", "Home");
-        t2 = new Phone("22222222", "Work");
+        t1 = new Phone("11111111", "Home", p1);
+        t2 = new Phone("22222222", "Work", p1);
 
         phones1.add(t1);
         phones1.add(t2);
         p1.setPhones(phones1);
 
-        h1 = new Hobby(0, "3D-udskrivning", "https://en.wikipedia.org/wiki/3D_printing");
-        h2 = new Hobby(0, "Akrobatik", "https://en.wikipedia.org/wiki/Acrobatics");
+        h1 = new Hobby( "3D-udskrivning", "https://en.wikipedia.org/wiki/3D_printing", p1);
+        h2 = new Hobby( "Akrobatik", "https://en.wikipedia.org/wiki/Acrobatics", p1);
 
         hobbies1.add(h1);
         hobbies1.add(h2);
