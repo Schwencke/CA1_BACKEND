@@ -1,10 +1,8 @@
 package facades;
 
-import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import dtos.PersonsDTO;
 import entities.*;
-import javassist.NotFoundException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -36,7 +34,7 @@ public class PersonFacade {
 
 
 
-    public void addPerson(PersonDTO pDto) throws Exception {
+    public PersonDTO addPerson(PersonDTO pDto) throws Exception {
         EntityManager em = getEntityManager();
 
         Person person;
@@ -72,6 +70,7 @@ public class PersonFacade {
         em.merge(person.getAddress().getCityInfo());
         em.persist(person.getAddress());
         em.getTransaction().commit();
+        return pDto;
     }
 
 

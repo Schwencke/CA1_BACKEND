@@ -1,5 +1,6 @@
 package facades;
 
+import dtos.PersonDTO;
 import entities.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -12,6 +13,7 @@ import javax.persistence.EntityManagerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -73,7 +75,6 @@ class PersonFacadeTest {
 
     @BeforeEach
     public void setUp() {
-
     }
 
     @AfterEach
@@ -81,7 +82,11 @@ class PersonFacadeTest {
     }
 
     @Test
-    void addPerson() {
+    void addPerson() throws Exception {
+        PersonDTO expected = new PersonDTO(p1);
+        PersonDTO actual = facade.addPerson(new PersonDTO(p1));
+        assertTrue(Objects.equals(expected.getfName(), actual.getfName()) &&
+                Objects.equals(expected.getlName(), actual.getlName()));
     }
 
     @Test
@@ -98,9 +103,15 @@ class PersonFacadeTest {
 
     @Test
     void getPerson() {
+        String expected = p1.getFirstName();
+        String actual = facade.getPerson(p1.getId()).getfName();
+        assertEquals(expected, actual);
     }
 
     @Test
     void getAllPersons() {
+        int expected = 2;
+        int actual = facade.getAllPersons().getAll().size();
+        assertEquals(expected, actual);
     }
 }
