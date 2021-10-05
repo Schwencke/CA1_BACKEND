@@ -167,6 +167,7 @@ public class PersonResourceTest {
     @Test
     public void editById() {
         PersonDTO expected = new PersonDTO(p1);
+        expected.setfName("Thomas");
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(expected)
@@ -174,8 +175,8 @@ public class PersonResourceTest {
                 .put("/person/")
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.OK_200.getStatusCode());
-                //.body("fName", equalTo("Mogens"));
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("fName", equalTo("Thomas"));
 
     }
 

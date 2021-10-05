@@ -45,6 +45,7 @@ public class PersonResource {
     }
 
     @PUT
+    @Produces({MediaType.APPLICATION_JSON})
     @Consumes(MediaType.APPLICATION_JSON)
     public Response edit(String a){
         PersonDTO pDTO = GSON.fromJson(a, PersonDTO.class);
