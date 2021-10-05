@@ -30,12 +30,36 @@ class PersonFacadeTest {
     private static List<Phone> phones2 = new ArrayList<>();
     private static List<Hobby> hobbies1 = new ArrayList<>();
 
-
+//
+//    EntityManager em = emf.createEntityManager();
+//        em.getTransaction().begin();
+//        em.createNativeQuery("insert into city_info (id,city, zipcode)"
+//                + "values(1,'Rønne', '3700')").executeUpdate();
+//        em.createNativeQuery("insert into city_info (id,city, zipcode)"
+//                +"values(2,'Pedersker','3720')").executeUpdate();
+//        em.createNativeQuery("insert into hobby (id,description, name)"
+//                +"values(1,'https://en.wikipedia.org/wiki/3D_printing','3D-udskrivning')").executeUpdate();
+//        em.createNativeQuery("insert into hobby (id,description, name)"
+//                +"values(2,'https://en.wikipedia.org/wiki/Acrobatics','Akrobatik')").executeUpdate();
+//        em.getTransaction().commit();
+//
 
     @BeforeAll
     public static void setUpClass() {
         emf = EMF_Creator.createEntityManagerFactoryForTest();
         facade = PersonFacade.getPersonFacade(emf);
+
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        em.createNativeQuery("insert into city_info (id,city, zipcode)"
+                + "values(1,'Rønne', '3700')").executeUpdate();
+        em.createNativeQuery("insert into city_info (id,city, zipcode)"
+                +"values(2,'Pedersker','3720')").executeUpdate();
+        em.createNativeQuery("insert into hobby (id,description, name)"
+                +"values(1,'https://en.wikipedia.org/wiki/3D_printing','3D-udskrivning')").executeUpdate();
+        em.createNativeQuery("insert into hobby (id,description, name)"
+                +"values(2,'https://en.wikipedia.org/wiki/Acrobatics','Akrobatik')").executeUpdate();
+        em.getTransaction().commit();
     }
 
     @AfterEach
@@ -46,6 +70,7 @@ class PersonFacadeTest {
             em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
             em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
             em.find(Person.class, p1.getId());
             em.remove(p1);
             em.getTransaction().commit();

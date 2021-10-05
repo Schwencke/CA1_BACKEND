@@ -10,6 +10,7 @@ import java.util.Objects;
 
 @Table(name = "hobby")
 @Entity
+@NamedQuery(name = "Hobby.deleteAllRows", query = "DELETE from Hobby")
 public class Hobby implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
