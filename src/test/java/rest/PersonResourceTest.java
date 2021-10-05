@@ -53,6 +53,7 @@ public class PersonResourceTest {
         return GrizzlyHttpServerFactory.createHttpServer(BASE_URI, rc);
     }
 
+
     @BeforeAll
     public static void setUpClass() {
         EMF_Creator.startREST_TestWithDB();
@@ -61,6 +62,8 @@ public class PersonResourceTest {
         RestAssured.baseURI = SERVER_URL;
         RestAssured.port = SERVER_PORT;
         RestAssured.defaultParser = Parser.JSON;
+
+
 
     }
 
