@@ -71,11 +71,6 @@ class PersonFacadeTest {
 
         try {
             em.getTransaction().begin();
-            em.createQuery("DELETE from Address");
-            em.createQuery("DELETE from CityInfo");
-            em.createQuery("DELETE from Hobby");
-            em.createQuery("DELETE from Person");
-            em.createQuery("DELETE from Phone");
             em.persist(a1);
             em.persist(c1);
             em.persist(p1);

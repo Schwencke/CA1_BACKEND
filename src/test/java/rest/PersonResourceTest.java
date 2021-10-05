@@ -9,11 +9,13 @@ import org.glassfish.grizzly.http.util.HttpStatus;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
 import io.restassured.RestAssured;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 
 import io.restassured.parsing.Parser;
+
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
+
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -52,29 +55,13 @@ public class PersonResourceTest {
 
     @BeforeAll
     public static void setUpClass() {
-        //This method must be called before you request the EntityManagerFactory
         EMF_Creator.startREST_TestWithDB();
         emf = EMF_Creator.createEntityManagerFactoryForTest();
         httpServer = startServer();
-        //Setup RestAssured
         RestAssured.baseURI = SERVER_URL;
         RestAssured.port = SERVER_PORT;
         RestAssured.defaultParser = Parser.JSON;
-    }
 
-    @AfterAll
-    public static void closeTestServer() {
-        //System.in.read();
-
-        //Don't forget this, if you called its counterpart in @BeforeAll
-        EMF_Creator.endREST_TestWithDB();
-        httpServer.shutdownNow();
-
-    }
-
-
-    @BeforeEach
-    public void setUp() {
         EntityManager em = emf.createEntityManager();
 
         p1 = new Person("Mogens", "Glad", "m@g.dk");
@@ -110,14 +97,8 @@ public class PersonResourceTest {
         p1.setHobbies(hobbies1);
         p2.setHobbies(hobbies1);
 
-
         try {
-           em.getTransaction().begin();
-            em.createQuery("DELETE from Address");
-            em.createQuery("DELETE from CityInfo");
-            em.createQuery("DELETE from Hobby");
-            em.createQuery("DELETE from Person");
-            em.createQuery("DELETE from Phone");
+            em.getTransaction().begin();
             em.persist(a1);
             em.persist(c1);
             em.persist(p1);
@@ -125,6 +106,24 @@ public class PersonResourceTest {
         } finally {
             em.close();
         }
+    }
+
+    @AfterAll
+    public static void closeTestServer() {
+        EMF_Creator.endREST_TestWithDB();
+        httpServer.shutdownNow();
+    }
+
+
+    @BeforeEach
+    public void setUp() {
+
+    }
+
+    @Test
+    public void testServerIsUp() {
+        System.out.println("Test server is running (okay)");
+        given().when().get("/person").then().statusCode(200);
     }
 
     @Test
@@ -178,15 +177,14 @@ public class PersonResourceTest {
     }
 
     @Test
-    public void deleteById(){
+    public void deleteById() {
         int id = p1.getId();
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .when()
-                .delete("/person/"+id)
+                .delete("/person/" + id)
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode());
     }
-
 }
