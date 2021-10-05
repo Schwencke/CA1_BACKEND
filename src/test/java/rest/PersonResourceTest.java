@@ -1,7 +1,10 @@
 package rest;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dtos.PersonDTO;
 import entities.*;
+import io.restassured.path.json.JsonPath;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import org.junit.jupiter.api.Test;
 import utils.EMF_Creator;
@@ -120,12 +123,24 @@ public class PersonResourceTest {
             em.persist(p1);
             em.getTransaction().commit();
             em.getTransaction().begin();
-            em.persist(a2);
-            em.persist(p2);
             em.getTransaction().commit();
         } finally {
             em.close();
         }
+    }
+
+    @Test
+    void create() {
+        PersonDTO expected = new PersonDTO(p2);
+
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(expected)
+                .when()
+                .post("/person").then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("fName", equalTo("Peter"));
     }
 
     @Test
@@ -135,7 +150,7 @@ public class PersonResourceTest {
                 .get("/person").then()
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("all", hasSize(2));
+                .body("all", hasSize(1));
     }
 
     @Test
@@ -145,26 +160,22 @@ public class PersonResourceTest {
                 .get("/person/" + p1.getId()).then()
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("fName", equalTo("Mogens"));
+                .body("fName", equalTo(p1.getFirstName()));
     }
 
     @Test
     public void editById() {
-
-
-        PersonDTO test = new PersonDTO(p1);
-        test.setfName("Thomas");
-
-
+        PersonDTO expected = new PersonDTO(p1);
         given()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(test)
+                .body(expected)
                 .when()
                 .put("/person/")
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("fName", equalTo("Thomas"));
+                .statusCode(HttpStatus.OK_200.getStatusCode());
+                //.body("fName", equalTo("Mogens"));
+
     }
 
 }

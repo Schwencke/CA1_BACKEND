@@ -70,7 +70,7 @@ public class PersonFacade {
         em.merge(person.getAddress().getCityInfo());
         em.persist(person.getAddress());
         em.getTransaction().commit();
-        return pDto;
+        return new PersonDTO(person);
     }
 
 
@@ -194,7 +194,7 @@ public class PersonFacade {
         } finally {
             em.close();
         }
-        return pDTO;
+        return new PersonDTO(ps);
     }
 
 

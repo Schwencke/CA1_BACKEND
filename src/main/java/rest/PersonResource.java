@@ -40,15 +40,13 @@ public class PersonResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response create(String a) throws Exception {
         PersonDTO pDTO = GSON.fromJson(a, PersonDTO.class);
-        FACADE.addPerson(pDTO);
-        return Response.ok().build();
+        return Response.ok().entity(GSON.toJson(FACADE.addPerson(pDTO))).build();
     }
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public Response edit(String a){
         PersonDTO pDTO = GSON.fromJson(a, PersonDTO.class);
-        FACADE.editPerson(pDTO);
-        return Response.ok().entity(GSON.toJson(pDTO)).build();
+        return Response.ok().entity(GSON.toJson(FACADE.editPerson(pDTO))).build();
     }
 }
