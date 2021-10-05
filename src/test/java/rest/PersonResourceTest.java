@@ -37,7 +37,7 @@ public class PersonResourceTest {
     private static final String SERVER_URL = "http://localhost/api";
     private static Person p1, p2;
     private static Address a1, a2;
-    private static CityInfo c1;
+    private static CityInfo c1, c2;
     private static Phone t1, t2, t3, t4;
     private static Hobby h1, h2;
     private static List<Phone> phones1 = new ArrayList<>();
@@ -62,50 +62,6 @@ public class PersonResourceTest {
         RestAssured.port = SERVER_PORT;
         RestAssured.defaultParser = Parser.JSON;
 
-        EntityManager em = emf.createEntityManager();
-
-        p1 = new Person("Mogens", "Glad", "m@g.dk");
-        p2 = new Person("Peter", "Belly", "p@b.dk");
-
-        a1 = new Address("Danmarksgade 111", "Home address");
-        a2 = new Address("Bornholmergaden 222", "Home address");
-        p1.setAddress(a1);
-        p2.setAddress(a2);
-
-        c1 = new CityInfo("3700", "Rønne");
-        a1.setCityInfo(c1);
-        a2.setCityInfo(c1);
-
-        t1 = new Phone("11111111", "Home", p1);
-        t2 = new Phone("22222222", "Work", p1);
-
-        phones1.add(t1);
-        phones1.add(t2);
-        p1.setPhones(phones1);
-
-        t3 = new Phone("33333333", "Home", p2);
-        t4 = new Phone("44444444", "Work", p2);
-        phones2.add(t3);
-        phones2.add(t4);
-        p2.setPhones(phones2);
-
-        h1 = new Hobby("3D-udskrivning", "https://en.wikipedia.org/wiki/3D_printing", p1);
-        h2 = new Hobby("Akrobatik", "https://en.wikipedia.org/wiki/Acrobatics", p1);
-
-        hobbies1.add(h1);
-        hobbies1.add(h2);
-        p1.setHobbies(hobbies1);
-        p2.setHobbies(hobbies1);
-
-        try {
-            em.getTransaction().begin();
-            em.persist(a1);
-            em.persist(c1);
-            em.persist(p1);
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
     }
 
     @AfterAll
@@ -114,16 +70,78 @@ public class PersonResourceTest {
         httpServer.shutdownNow();
     }
 
+    @AfterEach
+    public void clean(){
+        EntityManager em = emf.createEntityManager();
+        try{
+            em.getTransaction().begin();
+            em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+            em.find(Person.class, p1.getId());
+            em.remove(p1);
+            em.getTransaction().commit();
+        }finally {
+            em.close();
+        }
+
+    }
 
     @BeforeEach
     public void setUp() {
+        EntityManager em = emf.createEntityManager();
+
+        p1 = new Person("Mogens", "Glad", "m@g.dk");
+        p2 = new Person("Peter", "Belly", "p@b.dk");
+
+        a1 = new Address("Danmarksgade 111", "Home address");
+        a2 = new Address("Bornholmergaden 222", "Home address");
+
+        p1.setAddress(a1);
+        p2.setAddress(a2);
+
+        c1 = new CityInfo("3700", "Rønne");
+        c2 = new CityInfo("3720", "Pedersker");
+        c1.setId(1);
+        c2.setId(2);
+        a1.setCityInfo(c1);
+        a2.setCityInfo(c2);
+
+        t1 = new Phone("11111111", "Home");
+        t2 = new Phone("22222222", "Work");
+
+        phones1.add(t1);
+        phones1.add(t2);
+        p1.setPhones(phones1);
+
+        t3 = new Phone("33333333", "Home");
+        t4 = new Phone("44444444", "Work");
+        phones2.add(t3);
+        phones2.add(t4);
+        p2.setPhones(phones2);
+
+        h1 = new Hobby(1,"3D-udskrivning", "https://en.wikipedia.org/wiki/3D_printing");
+        h2 = new Hobby(2,"Akrobatik", "https://en.wikipedia.org/wiki/Acrobatics");
+
+
+        hobbies1.add(h1);
+        hobbies1.add(h2);
+        p1.setHobbies(hobbies1);
+        p2.setHobbies(hobbies1);
+
+
+        em.getTransaction().begin();
+        em.persist(p1);
+        em.persist(p1.getAddress());
+        em.getTransaction().commit();
+
 
     }
 
     @Test
     public void testServerIsUp() {
         System.out.println("Test server is running (okay)");
-        given().when().get("/person").then().statusCode(200);
+        given().when().get("/person/").then().statusCode(200);
     }
 
     @Test
@@ -134,7 +152,7 @@ public class PersonResourceTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(expected)
                 .when()
-                .post("/person").then()
+                .post("/person/").then()
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
                 .body("fName", equalTo("Peter"));
@@ -144,7 +162,7 @@ public class PersonResourceTest {
     public void testAll() {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
-                .get("/person").then()
+                .get("/person/").then()
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
                 .body("all", hasSize(1));

@@ -3,6 +3,7 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.PersonDTO;
+import dtos.PersonsDTO;
 import facades.PersonFacade;
 import utils.EMF_Creator;
 
@@ -23,8 +24,9 @@ public class PersonResource {
    // @Path("all") det er normalt at 'all' output kommer direkte på applayer, og ikke på "/all" path
     @Produces({MediaType.APPLICATION_JSON})
     public Response getAll() {
+        PersonsDTO psDto = FACADE.getAllPersons();
         return Response.ok()
-                .entity(GSON.toJson(FACADE.getAllPersons())).build();
+                .entity(GSON.toJson(psDto)).build();
     }
 
     @GET
@@ -37,11 +39,12 @@ public class PersonResource {
     }
 
     @POST
-    @Produces({MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response create(String a) throws Exception {
         PersonDTO pDTO = GSON.fromJson(a, PersonDTO.class);
-        return Response.ok().entity(GSON.toJson(FACADE.addPerson(pDTO))).build();
+        PersonDTO result = FACADE.addPerson(pDTO);
+        return Response.ok().entity(GSON.toJson(result)).build();
     }
 
     @PUT

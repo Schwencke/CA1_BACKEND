@@ -12,6 +12,7 @@ import java.util.Objects;
 
 @Table(name = "address")
 @Entity
+@NamedQuery(name = "Address.deleteAllRows", query = "DELETE from Address")
 public class Address implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

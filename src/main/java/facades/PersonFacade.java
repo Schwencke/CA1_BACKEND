@@ -58,11 +58,11 @@ public class PersonFacade {
 
         Person person;
         person = new Person(pDto);
-        if (checkAddress(em,person) != null){
-            person.setAddress(checkAddress(em,person));
+        if (checkAddress(person) != null){
+            person.setAddress(checkAddress(person));
         }
-        if (checkCity(em,person.getAddress().getCityInfo()) != null){
-            person.getAddress().setCityInfo(checkCity(em,person.getAddress().getCityInfo()));
+        if (checkCity(person.getAddress().getCityInfo()) != null){
+            person.getAddress().setCityInfo(checkCity(person.getAddress().getCityInfo()));
         }
 
         List<Hobby> newHobbyList = new ArrayList<>();
@@ -93,7 +93,8 @@ public class PersonFacade {
     }
 
 
-    private CityInfo checkCity(EntityManager em,CityInfo cityInfo) {
+    public CityInfo checkCity(CityInfo cityInfo) {
+        EntityManager em = emf.createEntityManager();
         CityInfo cinf;
         try{
             TypedQuery<CityInfo> query = em.createQuery("SELECT c FROM CityInfo c WHERE c.zipCode = :zipCode AND c.city = :city", CityInfo.class);
@@ -128,7 +129,8 @@ public class PersonFacade {
         }
     }
 
-    public Address checkAddress(EntityManager em,Person p){
+    public Address checkAddress(Person p){
+        EntityManager em = emf.createEntityManager();
         Address address;
         try{
         TypedQuery<Address> query = em.createQuery("SELECT a FROM Address a WHERE a.street = :street AND a.cityInfo.zipCode = :zipcode AND a.additionalInfo = :additionalInfo", Address.class);
