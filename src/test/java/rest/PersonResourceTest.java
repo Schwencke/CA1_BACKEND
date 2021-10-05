@@ -65,6 +65,10 @@ public class PersonResourceTest {
 
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
+        em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
+        em.createNamedQuery("Person.deleteAllRows").executeUpdate();
+        em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+        em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
         em.createNativeQuery("insert into city_info (id,city, zipcode)"
                 + "values(1,'Rønne', '3700')").executeUpdate();
         em.createNativeQuery("insert into city_info (id,city, zipcode)"
@@ -91,6 +95,7 @@ public class PersonResourceTest {
             em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
             em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
             em.find(Person.class, p1.getId());
             em.remove(p1);
             em.getTransaction().commit();
