@@ -67,8 +67,10 @@ class PersonFacadeTest {
         p1.setAddress(a1);
         p2.setAddress(a2);
 
-        c1 = new CityInfo("3700", "Rønne");
-        c2 = new CityInfo("3720", "Pedersker");
+        //// IMPORTANT - TEST-DATABASE MUST CONTAIN THEESE TWO CITIES
+        c1 = new CityInfo("3700", "Rønne"); /// MUST HAVE ID. 1
+        c2 = new CityInfo("3720", "Pedersker"); /// MUST HAVE ID. 2
+        //// IMPORTANT - TEST-DATABASE MUST CONTAIN THEESE TWO CITIES
         c1.setId(1);
         c2.setId(2);
         a1.setCityInfo(c1);
@@ -87,9 +89,10 @@ class PersonFacadeTest {
         phones2.add(t4);
         p2.setPhones(phones2);
 
-        h1 = new Hobby(1,"3D-udskrivning", "https://en.wikipedia.org/wiki/3D_printing");
-        h2 = new Hobby(2,"Akrobatik", "https://en.wikipedia.org/wiki/Acrobatics");
-
+        //// IMPORTANT - TEST-DATABASE MUST CONTAIN THEESE TWO HOBBIES
+        h1 = new Hobby(1,"3D-udskrivning", "https://en.wikipedia.org/wiki/3D_printing"); /// MUST HAVE ID. 1
+        h2 = new Hobby(2,"Akrobatik", "https://en.wikipedia.org/wiki/Acrobatics"); /// MUST HAVE ID. 2
+        //// IMPORTANT - TEST-DATABASE MUST CONTAIN THEESE TWO HOBBIES
 
         hobbies1.add(h1);
         hobbies1.add(h2);
