@@ -40,6 +40,9 @@ class PersonFacadeTest {
         em.createNamedQuery("Person.deleteAllRows").executeUpdate();
         em.createNamedQuery("Address.deleteAllRows").executeUpdate();
         em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
+        em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
+        em.getTransaction().commit();
+        em.getTransaction().begin();
         em.createNativeQuery("insert into city_info (id,city, zipcode)"
                 + "values(1,'Rønne', '3700')").executeUpdate();
         em.createNativeQuery("insert into city_info (id,city, zipcode)"
@@ -60,6 +63,7 @@ class PersonFacadeTest {
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
             em.createNamedQuery("Address.deleteAllRows").executeUpdate();
             em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
+
             em.find(Person.class, p1.getId());
             em.remove(p1);
             em.getTransaction().commit();

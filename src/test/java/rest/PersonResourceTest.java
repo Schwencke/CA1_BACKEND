@@ -69,6 +69,7 @@ public class PersonResourceTest {
         em.createNamedQuery("Person.deleteAllRows").executeUpdate();
         em.createNamedQuery("Address.deleteAllRows").executeUpdate();
         em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
+        em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
         em.createNativeQuery("insert into city_info (id,city, zipcode)"
                 + "values(1,'Rønne', '3700')").executeUpdate();
         em.createNativeQuery("insert into city_info (id,city, zipcode)"

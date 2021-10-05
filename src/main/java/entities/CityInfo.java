@@ -8,6 +8,7 @@ import java.util.Objects;
 
 @Table(name = "city_info")
 @Entity
+@NamedQuery(name = "CityInfo.deleteAllRows", query = "DELETE from CityInfo")
 public class CityInfo  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
