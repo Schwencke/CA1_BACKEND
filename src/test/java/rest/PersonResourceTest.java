@@ -6,7 +6,7 @@ import dtos.PersonDTO;
 import entities.*;
 import io.restassured.path.json.JsonPath;
 import org.glassfish.grizzly.http.util.HttpStatus;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
 import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
@@ -25,9 +25,6 @@ import javax.ws.rs.core.UriBuilder;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 //Uncomment the line below, to temporarily disable this test
 //@Disabled
 
@@ -58,7 +55,6 @@ public class PersonResourceTest {
         //This method must be called before you request the EntityManagerFactory
         EMF_Creator.startREST_TestWithDB();
         emf = EMF_Creator.createEntityManagerFactoryForTest();
-
         httpServer = startServer();
         //Setup RestAssured
         RestAssured.baseURI = SERVER_URL;
@@ -73,7 +69,9 @@ public class PersonResourceTest {
         //Don't forget this, if you called its counterpart in @BeforeAll
         EMF_Creator.endREST_TestWithDB();
         httpServer.shutdownNow();
+
     }
+
 
     @BeforeEach
     public void setUp() {
@@ -112,8 +110,9 @@ public class PersonResourceTest {
         p1.setHobbies(hobbies1);
         p2.setHobbies(hobbies1);
 
+
         try {
-            em.getTransaction().begin();
+           em.getTransaction().begin();
             em.createQuery("DELETE from Address");
             em.createQuery("DELETE from CityInfo");
             em.createQuery("DELETE from Hobby");
@@ -122,8 +121,6 @@ public class PersonResourceTest {
             em.persist(a1);
             em.persist(c1);
             em.persist(p1);
-            em.getTransaction().commit();
-            em.getTransaction().begin();
             em.getTransaction().commit();
         } finally {
             em.close();
