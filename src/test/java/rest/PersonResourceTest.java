@@ -17,6 +17,7 @@ import io.restassured.parsing.Parser;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.context.Dependent;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.MediaType;
@@ -176,6 +177,18 @@ public class PersonResourceTest {
                 .statusCode(HttpStatus.OK_200.getStatusCode());
                 //.body("fName", equalTo("Mogens"));
 
+    }
+
+    @Test
+    public void deleteById(){
+        int id = p1.getId();
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .when()
+                .delete("/person/"+id)
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode());
     }
 
 }

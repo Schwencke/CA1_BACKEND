@@ -33,6 +33,25 @@ public class PersonFacade {
 
 
 
+    public void deletePersonById(int id){
+        EntityManager em = getEntityManager();
+        Person ps;
+
+        try {
+            em.getTransaction().begin();
+            ps = em.find(Person.class, id);
+            if (ps == null){
+                // exception user not found
+            }
+            em.remove(ps);
+            em.getTransaction().commit();
+        }catch (Exception e){
+            //TODO: Errorhandeling
+        }finally {
+            em.close();
+        }
+    }
+
 
     public PersonDTO addPerson(PersonDTO pDto) throws Exception {
         EntityManager em = getEntityManager();

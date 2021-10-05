@@ -10,6 +10,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.lang.reflect.ReflectPermission;
 
 @Path("person")
 public class PersonResource {
@@ -19,7 +20,7 @@ public class PersonResource {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     @GET
-    @Path("all")
+   // @Path("all") det er normalt at 'all' output kommer direkte på applayer, og ikke på "/all" path
     @Produces({MediaType.APPLICATION_JSON})
     public Response getAll() {
         return Response.ok()
@@ -48,5 +49,13 @@ public class PersonResource {
     public Response edit(String a){
         PersonDTO pDTO = GSON.fromJson(a, PersonDTO.class);
         return Response.ok().entity(GSON.toJson(FACADE.editPerson(pDTO))).build();
+    }
+
+    @DELETE
+    @Path("{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response delete(@PathParam("id") Integer id){
+        FACADE.deletePersonById(id);
+        return Response.ok().build();
     }
 }
