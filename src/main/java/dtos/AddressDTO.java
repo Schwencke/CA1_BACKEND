@@ -2,12 +2,23 @@ package dtos;
 
 import entities.Address;
 import entities.CityInfo;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(name = "Address")
 public class AddressDTO {
+    @Schema(required = false, example = "1", description = "Person ID, never supplied with POST")
     private Integer id;
+
+    @Schema(required = true, example = "Ternevangen", description = "Street name")
     private String street;
+
+    @Schema(required = true, example = "2", description = "This field is meant for house number")
     private String additionalInfo;
+
+    @Schema(required = true, example = "3700", description = "Zipcode")
     private String zipCode;
+
+    @Schema(required = true, example = "Rønne", description = "City")
     private String city;
 
 

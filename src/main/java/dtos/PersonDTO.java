@@ -3,15 +3,24 @@ package dtos;
 
 import entities.Person;
 import dtos.PhonesDTO;
-import java.util.List;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.List;
+@Schema(name = "Person")
 public class PersonDTO {
+    @Schema(required = false,name ="id", example ="1", description = "never with POST")
     private Integer id;
+    @Schema(required = true,name ="fName",example ="Thomas", description = "Firstname")
     private String fName;
+    @Schema(required = true,name ="lName", example ="Overgaard", description = "Lastname")
     private String lName;
+    @Schema(required = true, example ="T@T.dk", description = "Email")
     private String email;
+    @Schema(required = true, implementation = AddressDTO.class)
     private AddressDTO address;
+    @Schema(required = true, implementation = PhoneDTO.class)
     private List<PhoneDTO> phones;
+    @Schema(required = true, implementation = HobbyDTO.class)
     private List<HobbyDTO> hobbies;
 
     public PersonDTO(Person ps) {

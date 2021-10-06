@@ -2,9 +2,13 @@ package dtos;
 
 import entities.Address;
 import entities.CityInfo;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(name = "City info")
 public class CityInfoDTO {
+    @Schema(required = true, example ="3700", description = "Any valid danish zipcode, as string")
     private String zipCode;
+    @Schema(required = true, example ="Rønne", description = "Any valid danish city matching the corresponding zipcode, as string")
     private String city;
 
     public CityInfoDTO(CityInfo cityInfo) {

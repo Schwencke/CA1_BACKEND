@@ -3,13 +3,17 @@ package dtos;
 import entities.Address;
 import entities.Hobby;
 import entities.Phone;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Schema(name = "Phone")
 public class PhoneDTO {
+    @Schema(required = false, example ="1", description = "Phone ID, Never sent with POST")
     private int id;
+    @Schema(required = true, example ="60837082", description = "Phone number")
     private String number;
+    @Schema(required = true, example ="Mobil", description = "Type or area related to phone number")
     private String description;
 
     public PhoneDTO(String number, String description) {

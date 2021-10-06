@@ -183,6 +183,11 @@ public class PersonFacade {
     public PersonDTO editPerson(PersonDTO pDTO) throws CustomException {
         EntityManager em = getEntityManager();
 
+        if (pDTO.getId() == null || pDTO.getId() <= 0){
+            throw new CustomException(404, "No person ID was provided");
+        }
+
+
         //TODO: Refactor
         if (pDTO.getfName().isEmpty() ||
                 pDTO.getlName().isEmpty() ||

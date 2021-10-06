@@ -5,13 +5,17 @@ import entities.Address;
 import entities.Hobby;
 import entities.Person;
 import entities.Phone;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Schema(name = "Hobby")
 public class HobbyDTO {
+    @Schema(required = true, example ="1", description = "must match prefixed valid ids")
     private int id;
+    @Schema(required = true, example ="3D-udskrivning", description = "must match prefixed valid hobby name")
     private String name;
+    @Schema(required = true, example ="https://en.wikipedia.org/wiki/3D_printing", description = "must match prefixed valid hobby description")
     private String description;
 
     public HobbyDTO(Hobby hobby) {
