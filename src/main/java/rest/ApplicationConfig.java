@@ -1,5 +1,8 @@
 package rest;
 
+import io.swagger.v3.jaxrs2.integration.resources.AcceptHeaderOpenApiResource;
+import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
+
 import java.util.Set;
 import javax.ws.rs.core.Application;
 
@@ -10,6 +13,8 @@ public class ApplicationConfig extends Application {
     public Set<Class<?>> getClasses() {
         Set<Class<?>> resources = new java.util.HashSet<>();
         addRestResourceClasses(resources);
+        resources.add(OpenApiResource.class);
+        resources.add(AcceptHeaderOpenApiResource.class);
         return resources;
     }
 
@@ -21,8 +26,10 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(errorhandling.GenericExceptionMapper.class);
+        resources.add(errorhandling.CustomExceptionMapper.class);
+        resources.add(rest.CorsFilter.class);
         resources.add(org.glassfish.jersey.server.wadl.internal.WadlResource.class);
-        resources.add(rest.RenameMeResource.class);
+        resources.add(rest.PersonResource.class);
     }
     
 }
