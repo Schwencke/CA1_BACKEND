@@ -2,6 +2,7 @@ package facades;
 
 import dtos.PersonDTO;
 import entities.*;
+import errorhandling.CustomException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -148,7 +149,7 @@ class PersonFacadeTest {
     }
 
     @Test
-    void editPerson() {
+    void editPerson() throws CustomException {
         p1.setFirstName("Thomas");
         PersonDTO expected = new PersonDTO(p1);
         PersonDTO actual = facade.editPerson(new PersonDTO(p1));
@@ -157,7 +158,7 @@ class PersonFacadeTest {
     }
 
     @Test
-    void getPerson() {
+    void getPerson() throws CustomException {
         String expected = p1.getFirstName();
         String actual = facade.getPerson(p1.getId()).getfName();
         assertEquals(expected, actual);

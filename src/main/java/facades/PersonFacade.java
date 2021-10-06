@@ -3,6 +3,7 @@ package facades;
 import dtos.PersonDTO;
 import dtos.PersonsDTO;
 import entities.*;
+import errorhandling.CustomException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -31,51 +32,57 @@ public class PersonFacade {
         return instance;
     }
 
-
-
-    public void deletePersonById(int id){
+    public void deletePersonById(int id) throws CustomException {
         EntityManager em = getEntityManager();
-        Person ps;
+        Person ps = em.find(Person.class, id);
+        if (ps == null) {
+            throw new CustomException(404, "No person with provided id (" + id + ") found.");
+        }
 
         try {
             em.getTransaction().begin();
-            ps = em.find(Person.class, id);
-            if (ps == null){
-                // exception user not found
-            }
             em.remove(ps);
             em.getTransaction().commit();
-        }catch (Exception e){
-            //TODO: Errorhandeling
-        }finally {
+        } finally {
             em.close();
         }
     }
 
-
-    public PersonDTO addPerson(PersonDTO pDto) throws Exception {
+    public PersonDTO addPerson(PersonDTO pDTO) throws CustomException {
         EntityManager em = getEntityManager();
 
+        //TODO: Refactor
+        if (pDTO.getfName() == null ||
+                pDTO.getlName() == null ||
+                pDTO.getEmail() == null ||
+                pDTO.getAddress() == null ||
+                pDTO.getPhones() == null ||
+                pDTO.getHobbies() == null) {
+            throw new CustomException(404, "One or more fields are missing.");
+        }
+
         Person person;
-        person = new Person(pDto);
-        if (checkAddress(person) != null){
+        person = new Person(pDTO);
+
+        if (checkAddress(person) != null) {
             person.setAddress(checkAddress(person));
         }
-        if (checkCity(person.getAddress().getCityInfo()) != null){
+        if (checkCity(person.getAddress().getCityInfo()) != null) {
             person.getAddress().setCityInfo(checkCity(person.getAddress().getCityInfo()));
         }
 
         List<Hobby> newHobbyList = new ArrayList<>();
         person.getHobbies().forEach(hob -> {
-            if (hob.getId() == 0){
-               newHobbyList.add(makeHobby(em, hob));
+            if (hob.getId() == 0) {
+                newHobbyList.add(makeHobby(em, hob));
             }
         });
 
         person.getHobbies().forEach(hobby -> {
             hobby = em.find(Hobby.class, hobby.getId());
-            if (!hobby.getPersons().contains(person)){
-                hobby.addPerson(person);}
+            if (!hobby.getPersons().contains(person)) {
+                hobby.addPerson(person);
+            }
             newHobbyList.add(hobby);
         });
 
@@ -92,30 +99,29 @@ public class PersonFacade {
         return new PersonDTO(person);
     }
 
-
     public CityInfo checkCity(CityInfo cityInfo) {
         EntityManager em = emf.createEntityManager();
         CityInfo cinf;
-        try{
+        try {
             TypedQuery<CityInfo> query = em.createQuery("SELECT c FROM CityInfo c WHERE c.zipCode = :zipCode AND c.city = :city", CityInfo.class);
             query.setParameter("zipCode", cityInfo.getZipCode());
             query.setParameter("city", cityInfo.getCity());
             cinf = query.getSingleResult();
-        }catch (NoResultException e){
+        } catch (NoResultException e) {
             return null;
         }
         return cinf;
     }
 
-    private Hobby makeHobby(EntityManager em,Hobby hb){
+    private Hobby makeHobby(EntityManager em, Hobby hb) {
 
-     em.getTransaction().begin();
-     em.persist(hb);
-     em.getTransaction().commit();
-     return hb;
+        em.getTransaction().begin();
+        em.persist(hb);
+        em.getTransaction().commit();
+        return hb;
     }
 
-    public Phone checkPhone(Phone phone){
+    public Phone checkPhone(Phone phone) {
         EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<Phone> query = em.createQuery("SELECT p FROM Phone p WHERE p.number = :number", Phone.class);
@@ -129,30 +135,39 @@ public class PersonFacade {
         }
     }
 
-    public Address checkAddress(Person p){
+    public Address checkAddress(Person p) {
         EntityManager em = emf.createEntityManager();
         Address address;
-        try{
-        TypedQuery<Address> query = em.createQuery("SELECT a FROM Address a WHERE a.street = :street AND a.cityInfo.zipCode = :zipcode AND a.additionalInfo = :additionalInfo", Address.class);
-        query.setParameter("street", p.getAddress().getStreet());
-        query.setParameter("zipcode", p.getAddress().getCityInfo().getZipCode());
-        query.setParameter("additionalInfo", p.getAddress().getAdditionalInfo());
-        address = query.getSingleResult();
-        }catch (NoResultException e){
-          return null;
+        try {
+            TypedQuery<Address> query = em.createQuery("SELECT a FROM Address a WHERE a.street = :street AND a.cityInfo.zipCode = :zipcode AND a.additionalInfo = :additionalInfo", Address.class);
+            query.setParameter("street", p.getAddress().getStreet());
+            query.setParameter("zipcode", p.getAddress().getCityInfo().getZipCode());
+            query.setParameter("additionalInfo", p.getAddress().getAdditionalInfo());
+            address = query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
         }
         return address;
     }
 
-
-    //TODO: fejlhåndtering
-    public PersonDTO editPerson(PersonDTO pDTO) {
+    public PersonDTO editPerson(PersonDTO pDTO) throws CustomException {
         EntityManager em = getEntityManager();
-       Person dtoPs = new Person();
-       dtoPs = dtoPs.fromDTO(pDTO, dtoPs);
 
-       Person ps;
-       Address ad = dtoPs.getAddress();
+        //TODO: Refactor
+        if (pDTO.getfName() == null ||
+                pDTO.getlName() == null ||
+                pDTO.getEmail() == null ||
+                pDTO.getAddress() == null ||
+                pDTO.getPhones() == null ||
+                pDTO.getHobbies() == null) {
+            throw new CustomException(404, "One or more fields are missing.");
+        }
+
+        Person dtoPs = new Person();
+        dtoPs = dtoPs.fromDTO(pDTO, dtoPs);
+
+        Person ps;
+        Address ad = dtoPs.getAddress();
 
         try {
             ps = em.find(Person.class, pDTO.getId());
@@ -163,25 +178,26 @@ public class PersonFacade {
             phl.forEach(ps::removePhone);
 
             dtoPs.getPhones().forEach(newPhones -> {
-                if (newPhones.getId() != null){
-                   Phone phone = em.find(Phone.class, newPhones.getId());
+                if (newPhones.getId() != null) {
+                    Phone phone = em.find(Phone.class, newPhones.getId());
                     phone.setDescription(newPhones.getDescription());
                     phone.setNumber(newPhones.getNumber());
                     ps.addPhone(phone);
                 } else {
-            Phone phone = checkPhone(newPhones);
-            if(phone == null){
-                ps.addPhone(newPhones);
-            } else if(phone.getPerson().getId() != null && phone.getPerson().getId().equals(ps.getId())) {
-                ps.addPhone(phone);
-            }else {
+                    Phone phone = checkPhone(newPhones);
+                    if (phone == null) {
+                        ps.addPhone(newPhones);
+                    } else if (phone.getPerson().getId() != null && phone.getPerson().getId().equals(ps.getId())) {
+                        ps.addPhone(phone);
+                    } else {
 
-                alreadyInUse.setNumber(phone.getNumber());
-            }
-            } });
-            if (alreadyInUse.getNumber() != null){
-                System.out.println("Nummeret eksistere allerede");
-                //TODO: implement errorhandler
+                        alreadyInUse.setNumber(phone.getNumber());
+                    }
+                }
+            });
+            if (alreadyInUse.getNumber() != null) {
+                System.out.println("Nummeret eksisterer allerede");
+                throw new CustomException(403, "The number already exists.");
             }
             //****//PHONE HANDLING//****//
 
@@ -191,18 +207,17 @@ public class PersonFacade {
             hby.forEach(ps::removeHobby);
             dtoPs.getHobbies().forEach(newHobbies -> {
                 Hobby hobby = em.find(Hobby.class, newHobbies.getId());
-                if (hobby == null){
+                if (hobby == null) {
                     notFoundHobby.setName(newHobbies.getName());
                 } else {
                     ps.addHobbies(hobby);
                 }
             });
-            if (notFoundHobby.getName() != null){
+            if (notFoundHobby.getName() != null) {
                 System.out.println("hobby not found");
-                //TODO: implement errorhandler
+                throw new CustomException(404, "Hobby not found.");
             }
             //****//HOBBY HANDLING//****//
-
 
             ps.setAddress(ad);
             ps.setFirstName(pDTO.getfName());
@@ -218,19 +233,22 @@ public class PersonFacade {
         return new PersonDTO(ps);
     }
 
-
-    public PersonDTO getPerson(int id) {
+    public PersonDTO getPerson(int id) throws CustomException {
         EntityManager em = getEntityManager();
         Person person = em.find(Person.class, id);
+        if (person == null) {
+            throw new CustomException(404, "No person with provided id (" + id + ") found.");
+        }
         return new PersonDTO(person);
     }
 
-
-    public PersonsDTO getAllPersons() {
+    public PersonsDTO getAllPersons() throws CustomException {
         EntityManager em = getEntityManager();
         TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p", Person.class);
         List<Person> persons = query.getResultList();
+        if (persons.isEmpty()) {
+            throw new CustomException(404, "No persons was found.");
+        }
         return new PersonsDTO(persons);
     }
-
 }

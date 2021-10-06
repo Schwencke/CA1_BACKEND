@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.PersonDTO;
 import dtos.PersonsDTO;
+import errorhandling.CustomException;
 import facades.PersonFacade;
 import utils.EMF_Creator;
 
@@ -21,9 +22,8 @@ public class PersonResource {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     @GET
-   // @Path("all") det er normalt at 'all' output kommer direkte på applayer, og ikke på "/all" path
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getAll() {
+    public Response getAll() throws CustomException {
         PersonsDTO psDto = FACADE.getAllPersons();
         return Response.ok()
                 .entity(GSON.toJson(psDto)).build();
@@ -32,7 +32,7 @@ public class PersonResource {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getOnId(@PathParam("id") Integer id) {
+    public Response getOnId(@PathParam("id") Integer id) throws CustomException {
         PersonDTO pDTO = FACADE.getPerson(id);
         return Response.ok()
                 .entity(GSON.toJson(pDTO)).build();
@@ -41,7 +41,7 @@ public class PersonResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(String a) throws Exception {
+    public Response create(String a) throws CustomException {
         PersonDTO pDTO = GSON.fromJson(a, PersonDTO.class);
         PersonDTO result = FACADE.addPerson(pDTO);
         return Response.ok().entity(GSON.toJson(result)).build();
@@ -50,7 +50,7 @@ public class PersonResource {
     @PUT
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response edit(String a){
+    public Response edit(String a) throws CustomException {
         PersonDTO pDTO = GSON.fromJson(a, PersonDTO.class);
         return Response.ok().entity(GSON.toJson(FACADE.editPerson(pDTO))).build();
     }
@@ -58,7 +58,7 @@ public class PersonResource {
     @DELETE
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response delete(@PathParam("id") Integer id){
+    public Response delete(@PathParam("id") Integer id) throws CustomException {
         FACADE.deletePersonById(id);
         return Response.ok().build();
     }
