@@ -49,8 +49,26 @@ public class PersonFacade {
         }
     }
 
+    public boolean checkPersonExist(PersonDTO pDTO) throws CustomException {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p WHERE p.firstName = :fname and p.lastName = :lname and p.address.street = :street and p.address.additionalInfo = :add", Person.class);
+            query.setParameter("fname", pDTO.getfName());
+            query.setParameter("lname", pDTO.getlName());
+            query.setParameter("street", pDTO.getAddress().getStreet());
+            query.setParameter("add", pDTO.getAddress().getAdditionalInfo());
+            query.getSingleResult();
+        } catch (NoResultException e) {
+            return false;
+        }
+        throw new CustomException(403, "En bruger med samme adresse og navn eksistere allerede");
+    }
+
+
     public PersonDTO addPerson(PersonDTO pDTO) throws CustomException {
         EntityManager em = getEntityManager();
+        checkPersonExist(pDTO);
+
 
         //TODO: Refactor
         if (pDTO.getfName().isEmpty() ||
