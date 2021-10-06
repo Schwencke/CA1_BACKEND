@@ -1,5 +1,6 @@
 package facades;
 
+import dtos.AddressDTO;
 import dtos.PersonDTO;
 import dtos.PersonsDTO;
 import entities.*;
@@ -150,6 +151,17 @@ public class PersonFacade {
         return address;
     }
 
+    public Address createNewAddress(Address ad){
+        EntityManager em = emf.createEntityManager();
+        CityInfo cityInfo = checkCity(ad.getCityInfo());
+        cityInfo = em.find(CityInfo.class, cityInfo.getId());
+        Address newAddress = new Address(ad.getStreet(), ad.getAdditionalInfo(), cityInfo);
+        em.getTransaction().begin();
+        em.persist(newAddress);
+        em.getTransaction().commit();
+        return newAddress;
+    }
+
     public PersonDTO editPerson(PersonDTO pDTO) throws CustomException {
         EntityManager em = getEntityManager();
 
@@ -167,18 +179,24 @@ public class PersonFacade {
         dtoPs = dtoPs.fromDTO(pDTO, dtoPs);
 
         Person ps;
-        Address ad = dtoPs.getAddress();
+        Address ad;
 
         try {
             ps = em.find(Person.class, pDTO.getId());
-
+            Address adrToRemove = em.find(Address.class, ps.getAddress().getId());
+            if (dtoPs.getAddress().getId() == null && adrToRemove.getPersons().size() <=0){
+                em.remove(adrToRemove);
+            }
+            // if no id was sent by PUT, it's a new Address, current must be set to null
+            if (dtoPs.getAddress().getId() == null){
+                ps.setAddress(null);
+            }
             //****//PHONE HANDLING//****//
             List<Phone> phl = new ArrayList<>(ps.getPhones());
             Phone alreadyInUse = new Phone();
             phl.forEach(ps::removePhone);
-
             dtoPs.getPhones().forEach(newPhones -> {
-                if (newPhones.getId() != null) {
+                if (newPhones.getId() != 0) {
                     Phone phone = em.find(Phone.class, newPhones.getId());
                     phone.setDescription(newPhones.getDescription());
                     phone.setNumber(newPhones.getNumber());
@@ -219,7 +237,19 @@ public class PersonFacade {
             }
             //****//HOBBY HANDLING//****//
 
-            ps.setAddress(ad);
+            if(dtoPs.getAddress().getId() != null){
+              ad = em.find(Address.class, ps.getAddress().getId());
+              ad.setStreet(dtoPs.getAddress().getStreet());
+              ad.setAdditionalInfo(dtoPs.getAddress().getAdditionalInfo());
+              if (!ad.getPersons().contains(ps)) {
+                  ad.addPerson(ps);
+              }
+              ps.setAddress(ad);
+            } else{
+                ps.setAddress( createNewAddress(dtoPs.getAddress()));
+                ps.getAddress().addPerson(ps);
+            }
+
             ps.setFirstName(pDTO.getfName());
             ps.setLastName(pDTO.getlName());
             ps.setEmail(pDTO.getEmail());
