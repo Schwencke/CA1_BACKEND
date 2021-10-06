@@ -52,9 +52,9 @@ public class PersonFacade {
         EntityManager em = getEntityManager();
 
         //TODO: Refactor
-        if (pDTO.getfName() == null ||
-                pDTO.getlName() == null ||
-                pDTO.getEmail() == null ||
+        if (pDTO.getfName().isEmpty() ||
+                pDTO.getlName().isEmpty() ||
+                pDTO.getEmail().isEmpty() ||
                 pDTO.getAddress() == null ||
                 pDTO.getPhones() == null ||
                 pDTO.getHobbies() == null) {
@@ -154,9 +154,9 @@ public class PersonFacade {
         EntityManager em = getEntityManager();
 
         //TODO: Refactor
-        if (pDTO.getfName() == null ||
-                pDTO.getlName() == null ||
-                pDTO.getEmail() == null ||
+        if (pDTO.getfName().isEmpty() ||
+                pDTO.getlName().isEmpty() ||
+                pDTO.getEmail().isEmpty() ||
                 pDTO.getAddress() == null ||
                 pDTO.getPhones() == null ||
                 pDTO.getHobbies() == null) {
