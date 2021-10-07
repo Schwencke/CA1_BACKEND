@@ -40,6 +40,10 @@ public class PersonFacade {
         if (ps == null) {
             throw new CustomException(404, "No person with provided id (" + id + ") found.");
         }
+        Address ad = em.find(Address.class, ps.getAddress().getId());
+        if (ad.getPersons().size() <=1){
+            em.remove(ad);
+        }
         try {
             em.getTransaction().begin();
             em.remove(ps);
