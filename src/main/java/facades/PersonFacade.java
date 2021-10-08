@@ -1,8 +1,6 @@
 package facades;
 
-import dtos.AddressDTO;
-import dtos.PersonDTO;
-import dtos.PersonsDTO;
+import dtos.*;
 import entities.*;
 import errorhandling.CustomException;
 
@@ -171,6 +169,22 @@ public class PersonFacade {
             return null;
         }
         return address;
+    }
+
+    public List<HobbyDTO> returnAllHobbys(){
+        EntityManager em = emf.createEntityManager();
+        List<HobbyDTO> list;
+      TypedQuery<HobbyDTO> query = em.createQuery("select h.id, h.name, h.description from Hobby h", HobbyDTO.class);
+        list = query.getResultList();
+        return list;
+    }
+
+    public List<CityInfoDTO> returnAllCities(){
+        EntityManager em = emf.createEntityManager();
+        List<CityInfoDTO> list;
+        TypedQuery<CityInfoDTO> query = em.createQuery("select c.id, c.city, c.zipCode from CityInfo c", CityInfoDTO.class);
+        list = query.getResultList();
+        return list;
     }
 
     public Address createNewAddress(Address ad){

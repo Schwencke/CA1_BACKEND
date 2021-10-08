@@ -132,4 +132,18 @@ public class PersonResource {
         FACADE.deletePersonById(id);
         return Response.ok().build();
     }
+
+    @GET
+    @Path("/hobby/")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response allHobbies(){
+        return Response.ok().entity(GSON.toJson(FACADE.returnAllHobbys())).build();
+    }
+
+    @GET
+    @Path("/cities/")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response allCities(){
+        return Response.ok().entity(GSON.toJson(FACADE.returnAllCities())).build();
+    }
 }
