@@ -183,7 +183,7 @@ public class PersonFacade {
         EntityManager em = emf.createEntityManager();
         List<CityInfoDTO> list;
         TypedQuery<CityInfoDTO> query = em.createQuery("select c.id, c.city, c.zipCode from CityInfo c", CityInfoDTO.class);
-        list = query.getResultList();
+       list = query.getResultList();
         return list;
     }
 

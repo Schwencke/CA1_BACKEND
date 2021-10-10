@@ -26,7 +26,7 @@ import java.lang.reflect.ReflectPermission;
 @OpenAPIDefinition(
         info = @Info(
                 title = "Peter og Thomas PersonDatabase API",
-                version = "0.011598",
+                version = "0.99",
                 description = "Simpel API til person håndtering CA1"
         ),
         tags = {
@@ -40,7 +40,7 @@ import java.lang.reflect.ReflectPermission;
                 ),
                 @Server(
                         description = "Server API",
-                        url = "https://thomasovergaard.me"
+                        url = "https://thomasovergaard.me/tomcat/CA1/api/person"
                 )
 
         }
